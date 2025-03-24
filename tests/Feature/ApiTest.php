@@ -6,8 +6,12 @@ use App\Models\UserProgress;
 use App\Models\UserFragment;
 use App\Models\Winner;
 use Laravel\Sanctum\Sanctum;
+use Illuminate\Support\Facades\DB;
 
 beforeEach(function () {
+    // Commencer une transaction pour assurer l'isolation des tests
+    DB::beginTransaction();
+
     // Nettoyer les tables pour repartir de zéro en utilisant delete() au lieu de truncate()
     Winner::query()->delete();
     UserFragment::query()->delete();
@@ -16,7 +20,8 @@ beforeEach(function () {
 
     // Créer un utilisateur pour les tests
     $this->user = User::factory()->create([
-        'points' => 0
+        'points' => 0,
+        'email_verified_at' => now() // S'assurer que l'utilisateur est vérifié
     ]);
 
     // Créer deux énigmes pour les tests
@@ -30,7 +35,8 @@ beforeEach(function () {
         'hint3' => 'Indice 3 pour énigme 1',
         'points' => 100,
         'difficulty' => 1,
-        'order' => 1
+        'order' => 1,
+        'fragment' => 'FRAG1' // Ajout d'un fragment par défaut pour la migration, si nécessaire
     ]);
 
     $this->enigma2 = Enigma::create([
@@ -43,13 +49,20 @@ beforeEach(function () {
         'hint3' => 'Indice 3 pour énigme 2',
         'points' => 200,
         'difficulty' => 2,
-        'order' => 2
+        'order' => 2,
+        'fragment' => 'FRAG2' // Ajout d'un fragment par défaut pour la migration, si nécessaire
     ]);
+
+    // Authentifier l'utilisateur pour tous les tests
+    Sanctum::actingAs($this->user);
+});
+
+afterEach(function () {
+    // Annuler la transaction pour ne pas affecter d'autres tests
+    DB::rollBack();
 });
 
 test('validate correct answer', function () {
-    Sanctum::actingAs($this->user);
-
     $response = $this->postJson("/api/enigmas/{$this->enigma1->id}/validate", [
         'answer' => 'réponse1'
     ]);
@@ -76,11 +89,15 @@ test('validate correct answer', function () {
         'user_id' => $this->user->id,
         'enigma_id' => $this->enigma1->id
     ]);
+
+    // Vérifier que le fragment est non vide
+    $fragment = UserFragment::where('user_id', $this->user->id)
+        ->where('enigma_id', $this->enigma1->id)
+        ->first();
+    expect($fragment->fragment)->not->toBeEmpty();
 });
 
 test('validate incorrect answer', function () {
-    Sanctum::actingAs($this->user);
-
     $response = $this->postJson("/api/enigmas/{$this->enigma1->id}/validate", [
         'answer' => 'mauvaise réponse'
     ]);
@@ -101,11 +118,39 @@ test('validate incorrect answer', function () {
         'attempts' => 1,
         'completed' => false
     ]);
+
+    // Vérifier qu'aucun fragment n'a été créé
+    $this->assertDatabaseMissing('user_fragments', [
+        'user_id' => $this->user->id,
+        'enigma_id' => $this->enigma1->id
+    ]);
+});
+
+test('validate answer with special characters', function () {
+    // Créer une énigme avec une réponse contenant des caractères spéciaux
+    $enigmaSpecial = Enigma::create([
+        'title' => 'Énigme spéciale',
+        'description' => 'Description de l\'énigme spéciale',
+        'content' => 'Contenu de l\'énigme spéciale',
+        'answer' => 'ré-ponse!@#$%^&*',
+        'hint1' => 'Indice 1',
+        'points' => 150,
+        'difficulty' => 2,
+        'order' => 3
+    ]);
+
+    $response = $this->postJson("/api/enigmas/{$enigmaSpecial->id}/validate", [
+        'answer' => 'ré-ponse!@#$%^&*'
+    ]);
+
+    $response->assertStatus(200)
+        ->assertJson([
+            'success' => true,
+            'completed' => true
+        ]);
 });
 
 test('get hint', function () {
-    Sanctum::actingAs($this->user);
-
     $response = $this->getJson("/api/enigmas/{$this->enigma1->id}/hint/1");
 
     $response->assertStatus(200)
@@ -122,9 +167,18 @@ test('get hint', function () {
     ]);
 });
 
-test('get user fragments', function () {
-    Sanctum::actingAs($this->user);
+test('get second hint requires first hint', function () {
+    // Tenter d'obtenir le deuxième indice sans avoir demandé le premier
+    $response = $this->getJson("/api/enigmas/{$this->enigma1->id}/hint/2");
 
+    $response->assertStatus(403)
+        ->assertJson([
+            'success' => false,
+            'message' => 'Vous devez d\'abord utiliser les indices précédents'
+        ]);
+});
+
+test('get user fragments', function () {
     // Créer un fragment pour l'utilisateur
     UserFragment::create([
         'user_id' => $this->user->id,
@@ -145,11 +199,12 @@ test('get user fragments', function () {
                 'percentage'
             ]
         ]);
+
+    // Vérifier que le fragment est bien inclus dans la réponse
+    $response->assertJsonPath('fragments.0.fragment', 'ABC');
 });
 
 test('validate treasure code without completing all enigmas', function () {
-    Sanctum::actingAs($this->user);
-
     // Marquer seulement la première énigme comme complétée
     UserProgress::create([
         'user_id' => $this->user->id,
@@ -178,9 +233,7 @@ test('validate treasure code without completing all enigmas', function () {
 });
 
 test('validate treasure code after completing all enigmas', function () {
-    Sanctum::actingAs($this->user);
-
-    // Résoudre la première énigme via l’API
+    // Résoudre la première énigme via l'API
     $response1 = $this->postJson("/api/enigmas/{$this->enigma1->id}/validate", [
         'answer' => 'réponse1'
     ]);
@@ -197,13 +250,13 @@ test('validate treasure code after completing all enigmas', function () {
         'completed' => true
     ]);
 
-    // Vérifier qu’un fragment a été généré
+    // Vérifier qu'un fragment a été généré
     $this->assertDatabaseHas('user_fragments', [
         'user_id' => $this->user->id,
         'enigma_id' => $this->enigma1->id
     ]);
 
-    // Résoudre la deuxième énigme via l’API
+    // Résoudre la deuxième énigme via l'API
     $response2 = $this->postJson("/api/enigmas/{$this->enigma2->id}/validate", [
         'answer' => 'réponse2'
     ]);
@@ -220,7 +273,7 @@ test('validate treasure code after completing all enigmas', function () {
         'completed' => true
     ]);
 
-    // Vérifier qu’un fragment a été généré
+    // Vérifier qu'un fragment a été généré
     $this->assertDatabaseHas('user_fragments', [
         'user_id' => $this->user->id,
         'enigma_id' => $this->enigma2->id
@@ -251,10 +304,82 @@ test('validate treasure code after completing all enigmas', function () {
             'is_first_winner' => true,
         ]);
 
-    // Vérifier que l’utilisateur est enregistré comme gagnant
+    // Vérifier que l'utilisateur est enregistré comme gagnant
     $this->assertDatabaseHas('winners', [
         'user_id' => $this->user->id,
         'treasure_hunt_id' => 1,
         'rank' => 1
     ]);
+});
+
+test('validate treasure code with incorrect format', function () {
+    // Résoudre toutes les énigmes
+    UserProgress::create([
+        'user_id' => $this->user->id,
+        'enigma_id' => $this->enigma1->id,
+        'completed' => true,
+        'completed_at' => now()
+    ]);
+
+    UserProgress::create([
+        'user_id' => $this->user->id,
+        'enigma_id' => $this->enigma2->id,
+        'completed' => true,
+        'completed_at' => now()
+    ]);
+
+    // Créer des fragments
+    UserFragment::create([
+        'user_id' => $this->user->id,
+        'enigma_id' => $this->enigma1->id,
+        'fragment' => 'ABC',
+        'fragment_order' => 1
+    ]);
+
+    UserFragment::create([
+        'user_id' => $this->user->id,
+        'enigma_id' => $this->enigma2->id,
+        'fragment' => 'DEF',
+        'fragment_order' => 2
+    ]);
+
+    // Soumettre un code incorrect
+    $response = $this->postJson('/api/treasure/validate', [
+        'code' => 'ABC-XYZ'
+    ]);
+
+    $response->assertStatus(200)
+        ->assertJson([
+            'success' => false,
+            'message' => 'Ce n\'est pas le bon code. Vérifiez l\'ordre de vos fragments.'
+        ]);
+});
+
+test('fragment uniqueness for same user and enigma', function () {
+    // Résoudre l'énigme une première fois
+    $response1 = $this->postJson("/api/enigmas/{$this->enigma1->id}/validate", [
+        'answer' => 'réponse1'
+    ]);
+
+    // Récupérer le fragment généré
+    $fragment1 = UserFragment::where('user_id', $this->user->id)
+        ->where('enigma_id', $this->enigma1->id)
+        ->first()->fragment;
+
+    // Supprimer manuellement la progression pour simuler une nouvelle tentative
+    UserProgress::where('user_id', $this->user->id)->delete();
+    UserFragment::where('user_id', $this->user->id)->delete();
+
+    // Résoudre l'énigme une seconde fois
+    $response2 = $this->postJson("/api/enigmas/{$this->enigma1->id}/validate", [
+        'answer' => 'réponse1'
+    ]);
+
+    // Récupérer le nouveau fragment
+    $fragment2 = UserFragment::where('user_id', $this->user->id)
+        ->where('enigma_id', $this->enigma1->id)
+        ->first()->fragment;
+
+    // Vérifier que le même fragment est généré
+    expect($fragment1)->toBe($fragment2);
 });

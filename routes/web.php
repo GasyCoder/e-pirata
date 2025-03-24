@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EnigmaController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\ProfileController;
@@ -9,73 +8,26 @@ use App\Http\Controllers\TreasureController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\Auth\GoogleController;
-use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 
 // ✅ Page d'accueil
 Route::get('/', function () {
     return view('welcome');
 });
-// routes/web.php
-Route::get('/contacte', function () {
-    return view('contacte'); // Créez une vue 'contacte.blade.php'
-});
-Route::get('/FAQ', function () {
-    return view('/FAQ'); // Créez une vue 'contacte.blade.php'
-});
 
-Route::get('/nous', function () {
-    return view('/nous'); // Créez une vue 'contacte.blade.php'
-});
-
-Route::get('/regles', function () {
-    return view('/regles'); // Créez une vue 'contacte.blade.php'
-});
-
-Route::get('/Remboursement', function () {
-    return view('/Remboursement'); // Créez une vue 'contacte.blade.php'
-});
-
-Route::get('/CGU', function () {
-    return view('/CGU'); // Créez une vue 'contacte.blade.php'
-});
-
-Route::get('/CGV', function () {
-    return view('/CGV'); // Créez une vue 'contacte.blade.php'
-});
-
-Route::get('/participer', function () {
-    return view('/participer'); // Créez une vue 'contacte.blade.php'
-});
-Route::get('/enigme', function () {
-    return view('/enigme'); // Créez une vue 'contacte.blade.php'
-});
-Route::get('/inscriptions', function () {
-    return view('/inscriptions'); // Créez une vue 'contacte.blade.php'
-});
-Route::get('/connexion', function () {
-    return view('/connexion'); // Créez une vue 'contacte.blade.php'
-});
-
-// Fahhhhhhhh
-Route::get('/appele', function () {
-    return view('/appele'); // Créez une vue 'contacte.blade.php'
-});
-
-
-
-// ✅ Routes d'authentification pour invités
-Route::middleware('guest')->group(function () {
-    Route::view('/register', 'auth.register')->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
-
-    Route::view('/login', 'auth.login')->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
-
-    // ✅ Connexion via Google OAuth
-    Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
-    Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('auth.google.callback');
-});
+// ✅ Pages informatives
+Route::get('/contacte', function () { return view('contacte'); });
+Route::get('/FAQ', function () { return view('FAQ'); });
+Route::get('/nous', function () { return view('nous'); });
+Route::get('/regles', function () { return view('regles'); });
+Route::get('/Remboursement', function () { return view('Remboursement'); });
+Route::get('/CGU', function () { return view('CGU'); });
+Route::get('/CGV', function () { return view('CGV'); });
+Route::get('/participer', function () { return view('participer'); });
+Route::get('/enigme', function () { return view('enigme'); });
+Route::get('/inscriptions', function () { return view('inscriptions'); });
+Route::get('/connexion', function () { return view('connexion'); });
+Route::get('/appele', function () { return view('appele'); });
 
 // ✅ Routes de vérification d'email (doit être connecté)
 Route::middleware(['auth'])->group(function () {
@@ -90,9 +42,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/email/resend', [EmailVerificationController::class, 'send'])
         ->middleware('throttle:6,1')
         ->name('verification.send');
-
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+// ✅ Connexion via Google OAuth (pas besoin d'être dans un groupe middleware)
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 // ✅ Routes protégées (connexion + email vérifié obligatoire)
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -137,5 +91,6 @@ Route::get('/test-images', function () {
 Route::view('/privacy-policy', 'legal.privacy-policy')->name('privacy-policy');
 Route::view('/terms', 'legal.terms')->name('terms');
 
-// ✅ Charger les routes d'authentification par défaut de Laravel (si utilisées)
+// ✅ Charger les routes d'authentification par défaut de Laravel
+// Cette ligne ne doit pas être commentée, car vous utilisez les contrôleurs standard de Laravel
 require __DIR__ . '/auth.php';

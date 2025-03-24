@@ -70,8 +70,8 @@ class EnigmaApiController extends Controller
 
         return response()->json([
             'success' => $isCorrect,
+            'completed' => $isCorrect && !$userProgress->completed ? true : $userProgress->completed ?? false,
             'data' => [
-                'completed' => $userProgress->completed ?? false,
                 'attempts' => $userProgress->attempts,
                 'points_earned' => $isCorrect && !$userProgress->completed ? $enigma->points : 0,
                 'fragment' => $fragment,
