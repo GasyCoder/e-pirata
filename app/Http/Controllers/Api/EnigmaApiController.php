@@ -7,8 +7,10 @@ use App\Models\Enigma;
 use App\Models\UserFragment;
 use App\Models\UserProgress;
 use Illuminate\Http\Request;
+use App\Http\Resources\ApiResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\FragmentResource;
 
 class EnigmaApiController extends Controller
 {
@@ -53,7 +55,7 @@ class EnigmaApiController extends Controller
             $userProgress->time_spent = $timeSpent;
 
             // Générer un fragment unique pour cet utilisateur et cette énigme
-            $fragment = $this->generateUniqueFragment($user->id, $enigmaId);
+            $fragment = $this->generateUniqueFragmentPrivate($user->id, $enigmaId);
 
             // Mettre à jour les points de l'utilisateur
             $user->points += $enigma->points;
@@ -68,25 +70,20 @@ class EnigmaApiController extends Controller
 
         $userProgress->save();
 
-        return response()->json([
-            'success' => $isCorrect,
-            'completed' => $isCorrect && !$userProgress->completed ? true : $userProgress->completed ?? false,
-            'data' => [
-                'attempts' => $userProgress->attempts,
-                'points_earned' => $isCorrect && !$userProgress->completed ? $enigma->points : 0,
-                'fragment' => $fragment,
-                'time_spent' => $userProgress->time_spent ?? null
-            ],
-            'message' => $message,
-            'errors' => null
-        ]);
+        return ApiResource::success([
+            'attempts' => $userProgress->attempts,
+            'points_earned' => $isCorrect && !$userProgress->completed ? $enigma->points : 0,
+            'fragment' => $fragment,
+            'time_spent' => $userProgress->time_spent ?? null,
+            'completed' => $isCorrect && !$userProgress->completed ? true : $userProgress->completed ?? false
+        ], $message, 200);
     }
-
 
     /**
      * Générer un fragment unique pour un utilisateur et une énigme
+     * Méthode privée utilisée en interne
      */
-    private function generateUniqueFragment($userId, $enigmaId)
+    private function generateUniqueFragmentPrivate($userId, $enigmaId)
     {
         // Créer un hash basé sur l'ID utilisateur et l'ID énigme
         $seed = $userId . '_' . $enigmaId . '_' . config('app.key');
@@ -110,6 +107,26 @@ class EnigmaApiController extends Controller
         return $fragment;
     }
 
+    /**
+     * Générer un fragment unique pour un utilisateur et une énigme (endpoint API)
+     */
+    public function generateUniqueFragment(Request $request)
+    {
+        $request->validate([
+            'enigma_id' => 'required|exists:enigmas,id',
+        ]);
+
+        $user = Auth::user() ?? $request->user();
+        $enigmaId = $request->input('enigma_id');
+
+        // Utiliser la méthode privée pour générer le fragment
+        $fragment = $this->generateUniqueFragmentPrivate($user->id, $enigmaId);
+
+        return ApiResource::success([
+            'fragment' => $fragment,
+            'enigma_id' => $enigmaId
+        ], 'Fragment généré avec succès');
+    }
 
     /**
      * Récupérer tous les fragments d'un utilisateur
@@ -119,7 +136,7 @@ class EnigmaApiController extends Controller
         $user = Auth::user() ?? $request->user();
         $fragments = UserFragment::where('user_id', $user->id)
             ->orderBy('fragment_order')
-            ->with('enigma:id,title,difficulty') // Eager load enigma with selected fields
+            ->with('enigma:id,title,difficulty')
             ->get();
 
         $totalEnigmas = Enigma::count();
@@ -129,15 +146,15 @@ class EnigmaApiController extends Controller
 
         $percentage = $totalEnigmas > 0 ? round(($completedEnigmas / $totalEnigmas) * 100) : 0;
 
-        return response()->json([
-            'fragments' => $fragments,
+        return ApiResource::success([
+            'fragments' => FragmentResource::collection($fragments),
             'all_completed' => $totalEnigmas === $completedEnigmas,
             'progress' => [
                 'total' => $totalEnigmas,
                 'completed' => $completedEnigmas,
                 'percentage' => $percentage
             ]
-        ]);
+        ], 'Fragments récupérés avec succès');
     }
 
     /**
@@ -147,10 +164,7 @@ class EnigmaApiController extends Controller
     {
         // Valider que le numéro d'indice est valide (1, 2 ou 3)
         if (!in_array($hintNumber, [1, 2, 3])) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Numéro d\'indice invalide'
-            ], 400);
+            return ApiResource::error('Numéro d\'indice invalide', null, 400);
         }
 
         $enigma = Enigma::findOrFail($enigmaId);
@@ -170,10 +184,7 @@ class EnigmaApiController extends Controller
 
         // Vérifier que l'utilisateur peut accéder à cet indice
         if ($hintNumber > 1 && ($userProgress->hints_used ?? 0) < ($hintNumber - 1)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Vous devez d\'abord utiliser les indices précédents'
-            ], 403);
+            return ApiResource::error('Vous devez d\'abord utiliser les indices précédents', null, 403);
         }
 
         // Mettre à jour le nombre d'indices utilisés
@@ -187,17 +198,13 @@ class EnigmaApiController extends Controller
         $hint = $enigma->$hintField;
 
         if (!$hint) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cet indice n\'est pas disponible'
-            ], 404);
+            return ApiResource::error('Cet indice n\'est pas disponible', null, 404);
         }
 
-        return response()->json([
-            'success' => true,
+        return ApiResource::success([
             'hint' => $hint,
             'hint_number' => $hintNumber
-        ]);
+        ], 'Indice récupéré avec succès');
     }
 
     /**
@@ -219,7 +226,7 @@ class EnigmaApiController extends Controller
             ->orderBy('order')
             ->get();
 
-        // Calculer le pourcentage global de progression
+        // Calculer le pourcentage de progression
         $totalEnigmas = $allEnigmas->count();
         $completedCount = $completedEnigmas->count();
         $percentage = $totalEnigmas > 0 ? round(($completedCount / $totalEnigmas) * 100) : 0;
@@ -237,7 +244,7 @@ class EnigmaApiController extends Controller
             ];
         });
 
-        return response()->json([
+        return ApiResource::success([
             'enigmas' => $enigmasWithStatus,
             'progress' => [
                 'total' => $totalEnigmas,
@@ -252,7 +259,7 @@ class EnigmaApiController extends Controller
                 'points' => $user->points,
                 'rank' => $this->getUserRank($user->id)
             ]
-        ]);
+        ], 'Progression utilisateur récupérée avec succès');
     }
 
     /**
@@ -268,12 +275,12 @@ class EnigmaApiController extends Controller
 
         $allCompleted = $totalEnigmas === $completedEnigmas;
 
-        return response()->json([
+        return ApiResource::success([
             'all_completed' => $allCompleted,
             'total' => $totalEnigmas,
             'completed' => $completedEnigmas,
             'percentage' => $totalEnigmas > 0 ? round(($completedEnigmas / $totalEnigmas) * 100) : 0
-        ]);
+        ], $allCompleted ? 'Toutes les énigmes sont complétées' : 'Certaines énigmes restent à compléter');
     }
 
     /**

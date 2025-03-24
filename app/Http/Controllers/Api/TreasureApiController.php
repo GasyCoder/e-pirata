@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\ApiResource;
 
 class TreasureApiController extends Controller
 {
@@ -28,10 +29,11 @@ class TreasureApiController extends Controller
 
         // Vérifier que l'utilisateur a résolu toutes les énigmes
         if (!$this->hasCompletedAllEnigmas($user->id)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Vous devez résoudre toutes les énigmes d\'abord !'
-            ], 403);
+            return ApiResource::error(
+                'Vous devez résoudre toutes les énigmes d\'abord !',
+                null,
+                403
+            );
         }
 
         // Vérifier si l'utilisateur a déjà validé le trésor
@@ -40,12 +42,15 @@ class TreasureApiController extends Controller
             ->first();
 
         if ($existingWinner) {
-            return response()->json([
-                'success' => true,
-                'already_won' => true,
-                'rank' => $existingWinner->rank,
-                'message' => "Vous avez déjà validé ce trésor et êtes classé {$existingWinner->rank}e !"
-            ]);
+            return ApiResource::success(
+                [
+                    'already_won' => true,
+                    'rank' => $existingWinner->rank,
+                    'completed_at' => $existingWinner->completed_at
+                ],
+                "Vous avez déjà validé ce trésor et êtes classé {$existingWinner->rank}e !",
+                200
+            );
         }
 
         try {
@@ -85,28 +90,32 @@ class TreasureApiController extends Controller
                     $message = "Félicitations ! Vous avez trouvé le trésor et êtes classé {$rank}e !";
                 }
 
-                return response()->json([
-                    'success' => true,
-                    'rank' => $rank,
-                    'is_first_winner' => $isFirstWinner,
-                    'completed_at' => $winner->completed_at,
-                    'message' => $message
-                ]);
+                return ApiResource::success(
+                    [
+                        'rank' => $rank,
+                        'is_first_winner' => $isFirstWinner,
+                        'completed_at' => $winner->completed_at,
+                        'treasure_hunt_id' => $treasureHuntId
+                    ],
+                    $message,
+                    200
+                );
             }
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Ce n\'est pas le bon code. Vérifiez l\'ordre de vos fragments.'
-            ]);
+            return ApiResource::error(
+                'Ce n\'est pas le bon code. Vérifiez l\'ordre de vos fragments.',
+                null,
+                200
+            );
 
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Une erreur est survenue lors de la validation du trésor.',
-                'error' => $e->getMessage()
-            ], 500);
+            return ApiResource::error(
+                'Une erreur est survenue lors de la validation du trésor.',
+                ['exception' => $e->getMessage()],
+                500
+            );
         }
     }
 
@@ -127,7 +136,6 @@ class TreasureApiController extends Controller
 
         return $totalEnigmas === $completedEnigmas;
     }
-
 
     /**
      * Récupérer le classement des gagnants
@@ -167,7 +175,7 @@ class TreasureApiController extends Controller
         // Récupérer la position de l'utilisateur actuel dans le classement par points
         $userRank = User::where('points', '>', $user->points)->count() + 1;
 
-        return response()->json([
+        return ApiResource::success([
             'winners' => $winners,
             'top_users' => $topUsers,
             'user_rank' => [
@@ -175,9 +183,8 @@ class TreasureApiController extends Controller
                 'name' => $user->name,
                 'points' => $user->points
             ]
-        ]);
+        ], 'Classement récupéré avec succès');
     }
-
 
     /**
      * Récupérer les derniers gagnants
@@ -200,9 +207,8 @@ class TreasureApiController extends Controller
                 ];
             });
 
-        return response()->json([
+        return ApiResource::success([
             'recent_winners' => $recentWinners
-        ]);
+        ], 'Gagnants récents récupérés avec succès');
     }
-
 }

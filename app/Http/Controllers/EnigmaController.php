@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
+
 class EnigmaController extends Controller
 {
     public function index(Request $request)

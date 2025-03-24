@@ -13,14 +13,14 @@ class ChapterController extends Controller
     {
         $user = Auth::user();
         $chapters = Chapter::orderBy('order')->get();
-        
+
         return view('chapters.index', compact('chapters', 'user'));
     }
 
     public function show(Chapter $chapter)
     {
         $user = Auth::user();
-        
+
         // Vérifier si le chapitre est accessible
         $previousChapter = Chapter::where('order', '<', $chapter->order)
                                 ->orderBy('order', 'desc')
@@ -68,7 +68,7 @@ class ChapterController extends Controller
     public function completeChapter(Chapter $chapter)
     {
         $user = Auth::user();
-        
+
         // Vérifier si toutes les énigmes sont résolues
         $allEnigmasCompleted = $chapter->enigmas()
                                      ->get()

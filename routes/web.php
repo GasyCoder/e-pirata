@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\EnigmaController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\ProfileController;
@@ -28,6 +29,10 @@ Route::get('/enigme', function () { return view('enigme'); });
 Route::get('/inscriptions', function () { return view('inscriptions'); });
 Route::get('/connexion', function () { return view('connexion'); });
 Route::get('/appele', function () { return view('appele'); });
+
+// ✅ Routes API (sans authentification)
+Route::middleware('auth')->get('/user-data', [ApiController::class, 'fetchUserData']);
+Route::get('/recent-winners', [ApiController::class, 'fetchRecentWinners']);
 
 // ✅ Routes de vérification d'email (doit être connecté)
 Route::middleware(['auth'])->group(function () {

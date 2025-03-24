@@ -11,41 +11,41 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    
+
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <!-- Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
     <!-- Styles -->
     @stack('styles')
-    
+
     <style>
         .font-pirate {
             font-family: 'Pirata One', cursive;
         }
-        
+
         body {
             background-color: #111827;
         }
-        
+
         .main-content {
             position: relative;
             z-index: 10;
         }
-        
+
         .nav-wrapper {
             position: relative;
             z-index: 20;
         }
-        
+
         .bg-overlay {
             position: fixed;
             top: 0;
@@ -57,33 +57,33 @@
             background-image: url('/images/old-map-bg.png');
             opacity: 0.1;
         }
-        
+
         /* Animations globales */
         .animate-float {
             animation: float 3s ease-in-out infinite;
         }
-        
+
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
-        
+
         .animate-pulse-slow {
             animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
-        
+
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: .7; }
         }
-        
+
         /* Effet de vague */
         .wave {
             position: relative;
             overflow: hidden;
         }
-        
+
         .wave::before {
             content: '';
             position: absolute;
@@ -94,7 +94,7 @@
             background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 80%);
             animation: rotate 8s linear infinite;
         }
-        
+
         @keyframes rotate {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -208,7 +208,7 @@
     </div>
 
     @stack('scripts')
-    
+
     <script>
         function toggleProfileMenu() {
             const menu = document.getElementById('profileMenu');
@@ -219,7 +219,7 @@
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('profileMenu');
             const button = event.target.closest('button');
-            
+
             if (!button && !menu.classList.contains('hidden')) {
                 menu.classList.add('hidden');
             }

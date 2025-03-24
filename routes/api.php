@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\EnigmaApiController;
 use App\Http\Controllers\Api\TreasureApiController;
 
+// Ces routes sont pour mon test personnel via thunder client pour avoir tokende l'utilisateur
 Route::post('/login', function (Request $request) {
     $credentials = $request->only('email', 'password');
     if (Auth::attempt($credentials)) {
@@ -30,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Routes énigmes
     Route::post('/enigmas/{enigmaId}/validate', [EnigmaApiController::class, 'validateAnswer']);
     Route::get('/enigmas/{enigmaId}/hint/{hintNumber}', [EnigmaApiController::class, 'getHint']);
+    Route::post('/fragments/generate', [EnigmaApiController::class, 'generateUniqueFragment']);
 
     // User fragments
     Route::get('/user/fragments', [EnigmaApiController::class, 'getUserFragments']);

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::dropIfExists('user_progress');
-        
+
         Schema::create('user_progress', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
@@ -24,6 +24,9 @@ return new class extends Migration
             $table->integer('hints_used')->default(0);
             $table->timestamp('completed_at')->nullable();
             $table->timestamp('winner_at')->nullable();
+            $table->json('attempt_history')->nullable();
+            $table->integer('time_spent')->default(0)->nullable();
+            $table->timestamp('first_viewed_at')->nullable();
             $table->timestamps();
         });
     }

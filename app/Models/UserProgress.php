@@ -20,7 +20,10 @@ class UserProgress extends Model
         'completed',
         'completed_at',
         'is_winner',
-        'winner_at'
+        'winner_at',
+        'attempt_history',
+        'time_spent',
+        'first_viewed_at'
     ];
 
     protected $casts = [
@@ -29,7 +32,9 @@ class UserProgress extends Model
         'completed_at' => 'datetime',
         'winner_at' => 'datetime',
         'attempts' => 'integer',
-        'hints_used' => 'integer'
+        'hints_used' => 'integer',
+        'time_spent' => 'integer',
+        'attempt_history' => 'array'
     ];
 
     public function user()
