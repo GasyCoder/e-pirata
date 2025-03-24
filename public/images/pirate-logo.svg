@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Chapeau de pirate -->
+    <path d="M40 100 C40 60, 160 60, 160 100" fill="#333333"/>
+    <path d="M30 100 L170 100 L170 130 C170 160, 30 160, 30 130 Z" fill="#333333"/>
+    
+    <!-- Crâne -->
+    <circle cx="100" cy="110" r="40" fill="#FFFFFF"/>
+    
+    <!-- Yeux -->
+    <circle cx="85" cy="105" r="8" fill="#000000"/>
+    <circle cx="115" cy="105" r="8" fill="#000000"/>
+    
+    <!-- Nez -->
+    <path d="M95 115 L105 115 L100 125 Z" fill="#000000"/>
+    
+    <!-- Bouche -->
+    <path d="M80 130 C100 140, 100 140, 120 130" stroke="#000000" stroke-width="3" fill="none"/>
+    
+    <!-- Petit crâne sur le chapeau -->
+    <circle cx="100" cy="70" r="10" fill="#FFFFFF"/>
+    <circle cx="95" cy="68" r="2" fill="#000000"/>
+    <circle cx="105" cy="68" r="2" fill="#000000"/>
+    <path d="M95 73 L105 73 L100 78 Z" fill="#000000"/>
+</svg>

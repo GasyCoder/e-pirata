@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <!-- Fond -->
+    <rect width="400" height="400" fill="#2c3e50" opacity="0.1"/>
+    
+    <!-- Cadre du sablier -->
+    <path d="M150 50 L250 50 L200 200 L250 350 L150 350 L200 200 Z" 
+          fill="none" stroke="#f1c40f" stroke-width="10"/>
+    
+    <!-- Sable supérieur -->
+    <path d="M160 70 L240 70 L200 180 Z" fill="#f1c40f" opacity="0.7"/>
+    
+    <!-- Sable inférieur -->
+    <path d="M160 330 L240 330 L200 220 Z" fill="#f1c40f"/>
+    
+    <!-- Grains de sable qui tombent -->
+    <circle cx="200" cy="190" r="3" fill="#f1c40f"/>
+    <circle cx="200" cy="200" r="3" fill="#f1c40f"/>
+    <circle cx="200" cy="210" r="3" fill="#f1c40f"/>
+    
+    <!-- Décorations -->
+    <rect x="140" y="40" width="120" height="20" fill="#8b4513"/>
+    <rect x="140" y="340" width="120" height="20" fill="#8b4513"/>
+</svg>

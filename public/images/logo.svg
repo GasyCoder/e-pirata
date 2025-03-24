@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Fond du logo -->
+    <circle cx="100" cy="100" r="95" fill="#1F2937" stroke="#EAB308" stroke-width="4"/>
+    
+    <!-- Chapeau de pirate -->
+    <path d="M50 80C50 60 80 40 100 40C120 40 150 60 150 80C150 90 140 95 130 95H70C60 95 50 90 50 80Z" fill="#EAB308"/>
+    <path d="M85 40C85 35 90 30 100 30C110 30 115 35 115 40C115 45 110 50 100 50C90 50 85 45 85 40Z" fill="#EAB308"/>
+    
+    <!-- Bandeau -->
+    <path d="M70 70H130" stroke="#1F2937" stroke-width="4"/>
+    
+    <!-- Crâne -->
+    <circle cx="100" cy="110" r="25" fill="#F3F4F6"/>
+    <circle cx="90" cy="105" r="5" fill="#1F2937"/>
+    <circle cx="110" cy="105" r="5" fill="#1F2937"/>
+    <path d="M90 120L110 120" stroke="#1F2937" stroke-width="3"/>
+    
+    <!-- Os croisés -->
+    <path d="M70 140L130 160M130 140L70 160" stroke="#EAB308" stroke-width="8" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Fond de la carte -->
+    <path d="M5 15C5 12.5 7.5 10 10 10H50C52.5 10 55 12.5 55 15V45C55 47.5 52.5 50 50 50H10C7.5 50 5 47.5 5 45V15Z" fill="#F3F4F6"/>
+    
+    <!-- Lignes de la carte -->
+    <path d="M15 20C25 25 35 15 45 20M15 30C25 35 35 25 45 30M15 40C25 45 35 35 45 40" stroke="#EAB308" stroke-width="2"/>
+    
+    <!-- X marque l'emplacement -->
+    <path d="M25 25L35 35M35 25L25 35" stroke="#1F2937" stroke-width="3" stroke-linecap="round"/>
+</svg>

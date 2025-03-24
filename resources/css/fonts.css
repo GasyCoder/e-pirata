@@ -1,0 +1,70 @@
+/* Police Pirate personnalisée */
+@font-face {
+    font-family: 'PirataOne';
+    src: url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Classes utilitaires pour la police */
+.font-pirate {
+    font-family: 'PirataOne', cursive;
+}
+
+/* Variantes de taille */
+.text-pirate-sm {
+    font-family: 'PirataOne', cursive;
+    font-size: 0.875rem;
+}
+
+.text-pirate-base {
+    font-family: 'PirataOne', cursive;
+    font-size: 1rem;
+}
+
+.text-pirate-lg {
+    font-family: 'PirataOne', cursive;
+    font-size: 1.125rem;
+}
+
+.text-pirate-xl {
+    font-family: 'PirataOne', cursive;
+    font-size: 1.25rem;
+}
+
+.text-pirate-2xl {
+    font-family: 'PirataOne', cursive;
+    font-size: 1.5rem;
+}
+
+.text-pirate-3xl {
+    font-family: 'PirataOne', cursive;
+    font-size: 1.875rem;
+}
+
+/* Effets spéciaux */
+.text-pirate-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.text-pirate-glow {
+    text-shadow: 0 0 10px rgba(255, 223, 0, 0.5);
+}
+
+/* Animation de flottement pour le texte */
+@keyframes float-text {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.text-pirate-float {
+    animation: float-text 3s ease-in-out infinite;
+}

@@ -1,0 +1,48 @@
+*{
+    box-sizing: border-box;
+    font-family: 'Merienda';
+}
+
+footer *{
+    font-family: 'Marcellus';
+}
+
+footer .remboursenment {
+    font-family: 'MarcellusSC';
+}
+
+.marcellus{
+    font-family: 'Marcellus';
+}
+
+.all-marcellus *{
+    font-family: 'Marcellus';
+}
+
+@font-face {
+    font-family: 'Merienda';
+    src: url('./fonts/Merienda/static/Merienda-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Merienda';
+    src: url('./fonts/Merienda/static/Merienda-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Marcellus';
+    src: url('./fonts/Marcellus/Marcellus-Regular.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MarcellusSC';
+    src: url('./fonts/Marcellus/MarcellusSC-Regular.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <!-- Fond -->
+    <rect width="400" height="400" fill="#2c3e50" opacity="0.1"/>
+    
+    <!-- Crâne -->
+    <path d="M150 150 
+             Q150 100 200 100 
+             Q250 100 250 150
+             Q250 200 200 220
+             Q150 200 150 150" 
+          fill="#f1f1f1"/>
+    
+    <!-- Mâchoire -->
+    <path d="M160 220
+             Q200 240 240 220
+             L230 260
+             Q200 280 170 260 Z" 
+          fill="#f1f1f1"/>
+    
+    <!-- Yeux -->
+    <path d="M170 160 Q185 150 200 160 Q185 170 170 160" fill="#2c3e50"/>
+    <path d="M200 160 Q215 150 230 160 Q215 170 200 160" fill="#2c3e50"/>
+    
+    <!-- Nez -->
+    <path d="M195 180 L205 180 L200 200 Z" fill="#2c3e50"/>
+    
+    <!-- Os croisés -->
+    <g transform="translate(200 320) rotate(45)">
+        <rect x="-60" y="-15" width="120" height="30" rx="15" fill="#f1f1f1"/>
+        <rect x="-15" y="-60" width="30" height="120" rx="15" fill="#f1f1f1"/>
+    </g>
+    
+    <!-- Détails -->
+    <path d="M160 140 Q200 120 240 140" fill="none" stroke="#2c3e50" stroke-width="2"/>
+    <path d="M180 240 Q200 250 220 240" fill="none" stroke="#2c3e50" stroke-width="2"/>
+    
+    <!-- Fissures décoratives -->
+    <path d="M180 120 L190 130 M210 120 L200 130" 
+          stroke="#2c3e50" stroke-width="1" fill="none"/>
+</svg>

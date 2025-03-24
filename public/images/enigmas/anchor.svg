@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <!-- Fond -->
+    <rect width="400" height="400" fill="#2c3e50" opacity="0.1"/>
+    
+    <!-- Ancre -->
+    <path d="M200 100 L200 300" stroke="#7f8c8d" stroke-width="20"/>
+    
+    <!-- Anneau supérieur -->
+    <circle cx="200" cy="80" r="20" fill="#7f8c8d"/>
+    <circle cx="200" cy="80" r="10" fill="#2c3e50"/>
+    
+    <!-- Bras -->
+    <path d="M200 200 L100 300 L100 250 L200 200" fill="#7f8c8d"/>
+    <path d="M200 200 L300 300 L300 250 L200 200" fill="#7f8c8d"/>
+    
+    <!-- Corde enroulée -->
+    <path d="M160 80 Q140 80 140 100 Q140 120 160 120" 
+          stroke="#8b4513" stroke-width="5" fill="none"/>
+    <path d="M240 80 Q260 80 260 100 Q260 120 240 120" 
+          stroke="#8b4513" stroke-width="5" fill="none"/>
+    
+    <!-- Détails -->
+    <circle cx="200" cy="150" r="10" fill="#7f8c8d"/>
+    <circle cx="200" cy="250" r="10" fill="#7f8c8d"/>
+</svg>

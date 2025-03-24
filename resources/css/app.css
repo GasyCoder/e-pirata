@@ -1,0 +1,334 @@
+@import 'fonts.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Thème Pirate */
+:root {
+    --color-treasure: #ffd700;
+    --color-parchment: #f4d03f;
+    --color-wood: #8b4513;
+    --color-ocean: #2980b9;
+}
+
+/* Composants personnalisés */
+@layer components {
+    .btn-pirate {
+        @apply bg-yellow-600 text-white px-6 py-3 rounded-lg hover:bg-yellow-700
+               focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2
+               focus:ring-offset-gray-800 font-pirate text-lg transform
+               hover:scale-105 transition-all duration-200;
+    }
+
+    .btn-connexion {
+        @apply px-6 py-3 rounded-lg
+               focus:outline-none text-lg transform
+               hover:scale-105 transition-all duration-200;
+        background-color: #727170;
+        color: white;
+    }
+
+    .input-pirate {
+        @apply appearance-none rounded-lg relative block w-full px-3 py-2;
+        background-color: #292929;
+        border: 1px solid #333333;
+        color: white;
+    }
+
+    .input-pirate:focus {
+        outline: none;
+        border-color: #444444;
+    }
+
+    .input-pirate::placeholder {
+        color: #666666;
+    }
+
+    .card-pirate {
+        @apply bg-gray-800/90 rounded-lg shadow-xl p-6 border-2 border-yellow-600/30
+               transform hover:scale-105 transition-all duration-300;
+    }
+
+    .title-pirate {
+        @apply text-3xl font-pirate text-yellow-500 mb-6;
+    }
+}
+
+input:focus {
+    outline: none !important;
+    border-color: #171e26 !important;
+    box-shadow: none !important;
+}
+
+/* Animations */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes wave {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(-25%); }
+    100% { transform: translateX(0); }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-wave {
+    animation: wave 10s linear infinite;
+}
+
+/* Animations des vagues */
+.wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 100px;
+    background: url('/images/wave.svg');
+    background-size: 50% 100%;
+    animation: wave 10s linear infinite;
+}
+
+.wave1 {
+    opacity: 1;
+    z-index: 1000;
+    animation: wave 20s linear infinite;
+}
+
+.wave2 {
+    opacity: 0.5;
+    z-index: 999;
+    animation: wave 15s linear infinite reverse;
+    bottom: -10px;
+}
+
+.wave3 {
+    opacity: 0.2;
+    z-index: 998;
+    animation: wave 30s linear infinite;
+    bottom: -20px;
+}
+
+@keyframes wave {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Effet de flottement pour les éléments */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Arrière-plans */
+.bg-treasure-map {
+    background-image: url('/images/map-bg.svg');
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-ship-deck {
+    background-image: url('/images/ship-deck.svg');
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-parchment {
+    background-image: url('/images/parchment.svg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Effets de superposition */
+.overlay-dark {
+    background: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.4)
+    );
+}
+
+.overlay-wood {
+    background-image: url('/images/ship-deck.svg');
+    background-blend-mode: overlay;
+    opacity: 0.1;
+}
+
+.overlay-water {
+    background: linear-gradient(to bottom,
+        rgba(41, 128, 185, 0.2),
+        rgba(41, 128, 185, 0.4)
+    );
+}
+
+/* Effets de texte */
+.text-shadow-pirate {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.text-glow-treasure {
+    text-shadow: 0 0 10px var(--color-treasure);
+}
+
+.text-glow {
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* Bordures stylisées */
+.border-treasure {
+    border-image: linear-gradient(45deg, var(--color-treasure), transparent) 1;
+}
+
+/* Effets de survol */
+.hover-treasure {
+    @apply transition-all duration-300;
+}
+
+.hover-treasure:hover {
+    @apply transform scale-105;
+    filter: drop-shadow(0 0 10px var(--color-treasure));
+}
+
+.hover\:scale-up:hover {
+    transform: scale(1.05);
+}
+
+/* Curseurs personnalisés */
+.cursor-compass {
+    cursor: url('/images/compass-cursor.svg'), auto;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .card-pirate {
+        @apply mx-4 my-3 p-4;
+    }
+
+    .title-pirate {
+        @apply text-2xl mb-4;
+    }
+
+    .btn-pirate {
+        @apply px-4 py-2 text-base;
+    }
+
+    .input-pirate {
+        @apply px-2 py-1;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-content {
+        @apply px-2;
+    }
+
+    .mobile-menu {
+        @apply fixed top-16 left-0 w-full bg-gray-900/95 backdrop-blur-xl 
+               border-b border-yellow-600/30 shadow-lg 
+               transform transition-transform duration-300;
+    }
+
+    .mobile-menu.open {
+        @apply translate-y-0;
+    }
+
+    .mobile-menu.closed {
+        @apply -translate-y-full;
+    }
+
+    .mobile-nav-link {
+        @apply block w-full px-4 py-3 text-gray-300 hover:bg-gray-800 
+               hover:text-yellow-500 border-l-4 border-transparent
+               hover:border-yellow-500 transition-all duration-200;
+    }
+}
+
+/* Responsive Typography */
+@media (max-width: 640px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    html {
+        font-size: 15px;
+    }
+}
+
+/* Responsive Layout */
+.responsive-grid {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.responsive-flex {
+    @apply flex flex-wrap items-center justify-center gap-4;
+}
+
+/* Responsive Images */
+.responsive-image {
+    @apply max-w-full h-auto object-cover;
+}
+
+/* Responsive Navigation */
+.nav-container {
+    @apply max-w-7xl mx-auto px-2 sm:px-4 lg:px-8;
+}
+
+.nav-content {
+    @apply flex justify-between items-center h-16;
+}
+
+/* Responsive Forms */
+.form-container {
+    @apply w-full max-w-md mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+@media (max-width: 640px) {
+    .form-container {
+        @apply px-4 py-6;
+    }
+}
+
+/* Responsive Tables */
+.responsive-table-container {
+    @apply w-full overflow-x-auto;
+}
+
+.responsive-table {
+    @apply min-w-full divide-y divide-gray-700;
+}
+
+@media (max-width: 640px) {
+    .responsive-table th,
+    .responsive-table td {
+        @apply px-2 py-2 text-sm;
+    }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-treasure: #ffd700;
+        --color-parchment: #d4af37;
+        --color-wood: #654321;
+        --color-ocean: #1a5f7a;
+    }
+}

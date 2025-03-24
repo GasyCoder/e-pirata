@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <!-- Fond -->
+    <rect width="400" height="400" fill="#2c3e50" opacity="0.1"/>
+    
+    <!-- Roue principale -->
+    <circle cx="200" cy="200" r="150" fill="#8b4513"/>
+    <circle cx="200" cy="200" r="130" fill="#6d4c41"/>
+    <circle cx="200" cy="200" r="30" fill="#8b4513"/>
+    
+    <!-- Poignées -->
+    @for($i = 0; $i < 8; $i++)
+        <g transform="rotate({{ $i * 45 }} 200 200)">
+            <rect x="170" y="50" width="60" height="20" rx="10" fill="#8b4513"/>
+            <circle cx="200" cy="60" r="15" fill="#6d4c41"/>
+        </g>
+    
+    <!-- Décorations -->
+    <circle cx="200" cy="200" r="20" fill="#f1c40f"/>
+    
+    <!-- Points cardinaux -->
+    <text x="200" y="40" text-anchor="middle" fill="#f1c40f" font-size="20">N</text>
+    <text x="200" y="380" text-anchor="middle" fill="#f1c40f" font-size="20">S</text>
+    <text x="380" y="200" text-anchor="middle" fill="#f1c40f" font-size="20">E</text>
+    <text x="40" y="200" text-anchor="middle" fill="#f1c40f" font-size="20">O</text>
+    
+    <!-- Motifs -->
+    <path d="M200 70 L200 90 M200 310 L200 330" stroke="#f1c40f" stroke-width="3"/>
+    <path d="M70 200 L90 200 M310 200 L330 200" stroke="#f1c40f" stroke-width="3"/>
+</svg>

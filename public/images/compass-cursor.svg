@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <!-- Cercle extérieur -->
+    <circle cx="16" cy="16" r="15" 
+            fill="none" 
+            stroke="#ffd700" 
+            stroke-width="2"/>
+    
+    <!-- Points cardinaux -->
+    <g fill="#ffd700" font-family="Arial" font-size="8" text-anchor="middle">
+        <text x="16" y="8">N</text>
+        <text x="24" y="17">E</text>
+        <text x="16" y="26">S</text>
+        <text x="8" y="17">O</text>
+    </g>
+    
+    <!-- Aiguille -->
+    <g transform="translate(16,16)">
+        <!-- Partie Nord (rouge) -->
+        <path d="M0,-12 L2,-2 L-2,-2 Z" 
+              fill="#ff0000"/>
+        <!-- Partie Sud (blanche) -->
+        <path d="M0,12 L2,2 L-2,2 Z" 
+              fill="#ffffff"/>
+    </g>
+    
+    <!-- Point central -->
+    <circle cx="16" cy="16" r="2" 
+            fill="#ffd700"/>
+</svg>

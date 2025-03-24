@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+    <!-- Définition des motifs -->
+    <defs>
+        <!-- Motif de bois -->
+        <pattern id="wood-pattern" x="0" y="0" width="100" height="20" patternUnits="userSpaceOnUse">
+            <rect width="100" height="20" fill="#8b4513"/>
+            <path d="M0,10 Q25,5 50,10 Q75,15 100,10" fill="none" stroke="#623010" stroke-width="1"/>
+            <path d="M0,15 Q25,20 50,15 Q75,10 100,15" fill="none" stroke="#623010" stroke-width="1"/>
+        </pattern>
+        
+        <!-- Texture de grain du bois -->
+        <filter id="wood-grain">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/>
+            <feColorMatrix type="saturate" values="0.1"/>
+        </filter>
+    </defs>
+    
+    <!-- Fond du pont -->
+    <rect width="100%" height="100%" fill="url(#wood-pattern)"/>
+    
+    <!-- Planches du pont -->
+    <g>
+        <rect y="0" width="100%" height="40" fill="url(#wood-pattern)" transform="rotate(0)"/>
+        <rect y="40" width="100%" height="40" fill="url(#wood-pattern)" filter="url(#wood-grain)" opacity="0.1"/>
+        <!-- Répéter pour tout le pont -->
+    </g>
+    
+    <!-- Détails du pont -->
+    <g stroke="#623010" stroke-width="2">
+        <!-- Cordages -->
+        <line x1="100" y1="0" x2="100" y2="1080" opacity="0.5"/>
+        <line x1="1820" y1="0" x2="1820" y2="1080" opacity="0.5"/>
+        
+        <!-- Boulons et fixations -->
+        <g fill="#4a250b">
+            <circle cx="100" cy="100" r="5"/>
+            <circle cx="100" cy="300" r="5"/>
+            <circle cx="1820" cy="100" r="5"/>
+            <circle cx="1820" cy="300" r="5"/>
+            <!-- Répéter pour plus de détails -->
+        </g>
+    </g>
+</svg>
