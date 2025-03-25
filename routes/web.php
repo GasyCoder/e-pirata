@@ -12,9 +12,12 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 
 // ✅ Page d'accueil
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+
+Route::redirect('/', '/login');
 
 // ✅ Pages informatives
 Route::get('/contacte', function () { return view('contacte'); });
