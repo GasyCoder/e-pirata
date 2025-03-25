@@ -30,10 +30,6 @@ Route::get('/inscriptions', function () { return view('inscriptions'); });
 Route::get('/connexion', function () { return view('connexion'); });
 Route::get('/appele', function () { return view('appele'); });
 
-// ✅ Routes API (sans authentification)
-Route::middleware('auth')->get('/user-data', [ApiController::class, 'fetchUserData']);
-Route::get('/recent-winners', [ApiController::class, 'fetchRecentWinners']);
-
 // ✅ Routes de vérification d'email (doit être connecté)
 Route::middleware(['auth'])->group(function () {
     Route::get('/email/verify', function () {
