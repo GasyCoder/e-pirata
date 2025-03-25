@@ -30,6 +30,7 @@ Route::get('/inscriptions', function () { return view('inscriptions'); });
 Route::get('/connexion', function () { return view('connexion'); });
 Route::get('/appele', function () { return view('appele'); });
 
+
 // ✅ Routes de vérification d'email (doit être connecté)
 Route::middleware(['auth'])->group(function () {
     Route::get('/email/verify', function () {
@@ -57,8 +58,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // 🎯 **Profil utilisateur**
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::match(['put', 'patch'], '/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('password.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
