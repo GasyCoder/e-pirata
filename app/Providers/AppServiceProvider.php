@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
         Scramble::configure()
         ->routes(function (Route $route) {
             return Str::startsWith($route->uri, 'api/');
+        });
+        
+        Gate::define('viewApiDocs', function (User $user) {
+            return in_array($user->email, ['admin@test.fr']);
         });
     }
 
