@@ -7,14 +7,33 @@ use App\Models\Enigma;
 use App\Models\Winner;
 use App\Models\UserFragment;
 use App\Models\UserProgress;
+use App\Services\FragmentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\ApiResource;
+use Illuminate\Support\Facades\Log;
 
 class TreasureApiController extends Controller
 {
+    /**
+     * Le service d'assemblage de fragments.
+     *
+     * @var \App\Services\FragmentService
+     */
+    protected $fragmentService;
+
+    /**
+     * Constructeur du contrôleur.
+     *
+     * @param \App\Services\FragmentService $fragmentService
+     */
+    public function __construct(FragmentService $fragmentService)
+    {
+        $this->fragmentService = $fragmentService;
+    }
+
     /**
      * Valider le code du trésor
      */
@@ -54,16 +73,8 @@ class TreasureApiController extends Controller
         }
 
         try {
-            // Récupérer les fragments de l'utilisateur dans l'ordre
-            $userFragments = UserFragment::where('user_id', $user->id)
-                ->orderBy('fragment_order')
-                ->pluck('fragment');
-
-            // Construire le code attendu
-            $expectedCode = $userFragments->implode('-');
-
-            // Vérifier si le code soumis correspond (insensible à la casse)
-            $isCorrect = strtolower(trim($request->code)) === strtolower(trim($expectedCode));
+            // Utiliser le service d'assemblage pour valider le code
+            $isCorrect = $this->fragmentService->validateCode($user->id, $request->code, '-');
 
             if ($isCorrect) {
                 DB::beginTransaction();
@@ -90,6 +101,14 @@ class TreasureApiController extends Controller
                     $message = "Félicitations ! Vous avez trouvé le trésor et êtes classé {$rank}e !";
                 }
 
+                // Journaliser la validation du trésor
+                Log::info('Trésor validé', [
+                    'user_id' => $user->id,
+                    'user_name' => $user->name,
+                    'rank' => $rank,
+                    'treasure_hunt_id' => $treasureHuntId
+                ]);
+
                 return ApiResource::success(
                     [
                         'rank' => $rank,
@@ -102,6 +121,13 @@ class TreasureApiController extends Controller
                 );
             }
 
+            // Journaliser la tentative échouée
+            Log::info('Tentative de validation de trésor échouée', [
+                'user_id' => $user->id,
+                'user_name' => $user->name,
+                'code_submitted' => $request->code
+            ]);
+
             return ApiResource::error(
                 'Ce n\'est pas le bon code. Vérifiez l\'ordre de vos fragments.',
                 null,
@@ -110,6 +136,14 @@ class TreasureApiController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+
+            // Journaliser l'erreur
+            Log::error('Erreur lors de la validation du trésor', [
+                'user_id' => $user->id,
+                'user_name' => $user->name,
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
 
             return ApiResource::error(
                 'Une erreur est survenue lors de la validation du trésor.',
@@ -210,5 +244,57 @@ class TreasureApiController extends Controller
         return ApiResource::success([
             'recent_winners' => $recentWinners
         ], 'Gagnants récents récupérés avec succès');
+    }
+
+    /**
+     * Récupérer des statistiques sur les fragments et la progression
+     */
+    public function getFragmentsStats(Request $request)
+    {
+        $user = Auth::user() ?? $request->user();
+
+        // Utiliser le service pour récupérer les statistiques
+        $fragmentStats = $this->fragmentService->getFragmentsProgress($user->id);
+
+        return ApiResource::success($fragmentStats, 'Statistiques des fragments récupérées avec succès');
+    }
+
+    /**
+     * Récupérer le code assemblé pour un utilisateur (admin uniquement)
+     */
+    public function getAssembledCode(Request $request, $userId)
+    {
+        // Vérifier si l'utilisateur est admin
+        $currentUser = Auth::user() ?? $request->user();
+        if ($currentUser->email !== 'admin@pirata.fr') {
+            return ApiResource::error(
+                'Non autorisé. Cette action est réservée aux administrateurs.',
+                null,
+                403
+            );
+        }
+
+        // Vérifier que l'utilisateur cible existe
+        $targetUser = User::find($userId);
+        if (!$targetUser) {
+            return ApiResource::error(
+                'Utilisateur non trouvé',
+                null,
+                404
+            );
+        }
+
+        // Utiliser le service pour récupérer le code assemblé
+        $code = $this->fragmentService->assembleFragments($userId, '-');
+        $hasAllFragments = $this->fragmentService->hasAllFragments($userId);
+
+        return ApiResource::success([
+            'user_id' => (int)$userId,
+            'user_name' => $targetUser->name,
+            'code' => $code,
+            'has_all_fragments' => $hasAllFragments,
+            'fragments_count' => UserFragment::where('user_id', $userId)->count(),
+            'total_enigmas' => Enigma::count()
+        ], 'Code assemblé récupéré avec succès');
     }
 }

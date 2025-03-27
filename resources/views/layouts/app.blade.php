@@ -100,6 +100,7 @@
             to { transform: rotate(360deg); }
         }
     </style>
+    <x-rich-text::styles theme="richtextlaravel" data-turbo-track="false" />
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-900">
@@ -116,11 +117,15 @@
                                 <span class="ml-2 text-xl font-bold text-yellow-500">El Pirata</span>
                             </a>
                             <div class="ml-10 flex items-center space-x-4">
-                                <a href="{{ route('dashboard') }}" class="text-gray-300 hover:text-yellow-500 px-3 py-2 rounded-md text-sm font-medium">
+                                <a href="{{ route('dashboard') }}"
+                                   class="{{ request()->routeIs('dashboard') ? 'bg-gray-700 text-yellow-500' : 'text-gray-300 hover:text-yellow-500' }} px-3 py-2 rounded-md text-sm font-medium">
                                     Tableau de bord
                                 </a>
+
                                 <div class="relative ml-3">
-                                    <button type="button" onclick="toggleProfileMenu()" class="flex items-center text-gray-300 hover:text-yellow-500 px-3 py-2 rounded-md text-sm font-medium">
+                                    <button type="button"
+                                            onclick="toggleProfileMenu()"
+                                            class="{{ request()->routeIs('profile.*') ? 'bg-gray-700 text-yellow-500' : 'text-gray-300 hover:text-yellow-500' }} flex items-center px-3 py-2 rounded-md text-sm font-medium">
                                         <span>Mon Profil</span>
                                         <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -128,20 +133,31 @@
                                     </button>
                                     <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5">
                                         <div class="py-1">
-                                            <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-sm text-gray-300 hover:text-yellow-500">
+                                            <a href="{{ route('profile.show') }}"
+                                               class="{{ request()->routeIs('profile.show') ? 'bg-gray-700 text-yellow-500' : 'text-gray-300 hover:text-yellow-500' }} block px-4 py-2 text-sm">
                                                 Voir le profil
                                             </a>
-                                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-300 hover:text-yellow-500">
+                                            <a href="{{ route('profile.edit') }}"
+                                               class="{{ request()->routeIs('profile.edit') ? 'bg-gray-700 text-yellow-500' : 'text-gray-300 hover:text-yellow-500' }} block px-4 py-2 text-sm">
                                                 Modifier le profil
                                             </a>
                                         </div>
                                     </div>
                                 </div>
-                                <a href="{{ route('chapters.index') }}" class="text-gray-300 hover:text-yellow-500 px-3 py-2 rounded-md text-sm font-medium">
+
+                                <a href="{{ route('chapters.index') }}"
+                                   class="{{ request()->routeIs('chapters.*') ? 'bg-gray-700 text-yellow-500' : 'text-gray-300 hover:text-yellow-500' }} px-3 py-2 rounded-md text-sm font-medium">
                                     Chapitres
                                 </a>
-                                <a href="{{ route('enigmas.index') }}" class="text-gray-300 hover:text-yellow-500 px-3 py-2 rounded-md text-sm font-medium">
+
+                                <a href="{{ route('enigmas.index') }}"
+                                   class="{{ request()->routeIs('enigmas.*') ? 'bg-gray-700 text-yellow-500' : 'text-gray-300 hover:text-yellow-500' }} px-3 py-2 rounded-md text-sm font-medium">
                                     Énigmes
+                                </a>
+
+                                <a href="{{ route('admin.pages.index') }}"
+                                   class="{{ request()->routeIs('admin.pages.*') ? 'bg-gray-700 text-yellow-500' : 'text-gray-300 hover:text-yellow-500' }} px-3 py-2 rounded-md text-sm font-medium">
+                                    Pages
                                 </a>
                             </div>
                         </div>

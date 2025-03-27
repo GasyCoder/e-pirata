@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\EnigmaController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\ProfileController;
@@ -12,12 +13,12 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 
 // ✅ Page d'accueil
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 
-Route::redirect('/', '/login');
+// Route::redirect('/', '/login');
 
 // ✅ Pages informatives
 Route::get('/contacte', function () { return view('contacte'); });
@@ -25,8 +26,8 @@ Route::get('/FAQ', function () { return view('FAQ'); });
 Route::get('/nous', function () { return view('nous'); });
 Route::get('/regles', function () { return view('regles'); });
 Route::get('/Remboursement', function () { return view('Remboursement'); });
-Route::get('/CGU', function () { return view('CGU'); });
-Route::get('/CGV', function () { return view('CGV'); });
+Route::get('/cgu', [PageController::class, 'show'])->name('pages.cgu')->defaults('slug', 'cgu');
+Route::get('/cgv', [PageController::class, 'show'])->name('pages.cgv')->defaults('slug', 'cgv');
 Route::get('/participer', function () { return view('participer'); });
 Route::get('/enigme', function () { return view('enigme'); });
 Route::get('/inscriptions', function () { return view('inscriptions'); });
@@ -52,6 +53,13 @@ Route::middleware(['auth'])->group(function () {
 // ✅ Connexion via Google OAuth (pas besoin d'être dans un groupe middleware)
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+
+// Routes d'administration (protégées)
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
+    Route::get('/pages/{id}/edit', [PageController::class, 'edit'])->name('pages.edit');
+    Route::put('/pages/{id}', [PageController::class, 'update'])->name('pages.update');
+});
 
 // ✅ Routes protégées (connexion + email vérifié obligatoire)
 Route::middleware(['auth', 'verified'])->group(function () {

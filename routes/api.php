@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\EnigmaApiController;
 use App\Http\Controllers\Api\TreasureApiController;
 
@@ -50,4 +52,24 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Vérifier si l'utilisateur a complété toutes les énigmes
     Route::get('/user/completed-all', [EnigmaApiController::class, 'hasCompletedAllEnigmas']);
+
+    // Routes pour les notes - noter l'ordre des routes
+    Route::post('/notes/clear-all', [NoteController::class, 'clearAll'])->middleware('admin');
+    Route::delete('/notes/{enigma_id}', [NoteController::class, 'destroy'])->middleware('admin');
+    Route::get('/notes/{enigma_id}', [NoteController::class, 'show'])
+        ->where('enigma_id', '[0-9]+');
+    Route::post('/notes/{enigma_id}', [NoteController::class, 'storeOrUpdate'])
+        ->where('enigma_id', '[0-9]+');
+    Route::get('/notes', [NoteController::class, 'getUserNotes']);
+
+    // Route accéder aux pages (CGU, CGV)
+    Route::get('/pages/{slug}', [PageController::class, 'show']);
+
 });
+
+// Routes protégées pour admin uniquement
+Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'admin']], function () {
+    Route::get('/pages', [PageController::class, 'index']);
+    Route::put('/pages/{id}', [PageController::class, 'update']);
+});
+

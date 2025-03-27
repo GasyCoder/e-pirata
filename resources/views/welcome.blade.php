@@ -159,13 +159,13 @@
                             x-transition:leave-start="opacity-100 transform scale-100"
                             x-transition:leave-end="opacity-0 transform scale-90">
                             <!-- Liens du menu -->
-                            <a href="#hero" class="block px-4 py-2 hover:bg-[#E3342F] transition">Accueil</a>
+                            <a href="/" class="block px-4 py-2 hover:bg-[#E3342F] transition">Accueil</a>
                             <a href="#about" class="block px-4 py-2 hover:bg-[#E3342F] transition">Profil</a>
                             <a href="#services" class="block px-4 py-2 hover:bg-[#E3342F] transition">Les chasses au trésor</a>
                             <a href="#gallery" class="block px-4 py-2 hover:bg-[#E3342F] transition">Commencer mon aventure</a>
                             <a href="#contact" class="block px-4 py-2 hover:bg-[#E3342F] transition">Avis</a>
-                            <a href="/CGV" class="block px-4 py-2 hover:bg-[#E3342F] transition">CGV</a>
-                            <a href="/CGU" class="block px-4 py-2 hover:bg-[#E3342F] transition">CGU</a>
+                            <a href="{{ route('pages.cgv')}}" class="block px-4 py-2 hover:bg-[#E3342F] transition">CGV</a>
+                            <a href="{{ route('pages.cgu')}}" class="block px-4 py-2 hover:bg-[#E3342F] transition">CGU</a>
                             <a href="/Remboursement" class="block px-4 py-2 hover:bg-[#E3342F] transition">Remboursement</a>
                             <a href="/regles" class="block px-4 py-2 hover:bg-[#E3342F] transition">Règle du jeu</a>
                             <a href="/nous" class="block px-4 py-2 hover:bg-[#E3342F] transition">Qui sommes-nous</a>
@@ -377,13 +377,6 @@
     <!-- ============================== -->
     <!-- SECTION GALERIE / CAROUSEL -->
     <!-- ============================== -->
-
-
-
-
-
-
-
 
 
 
@@ -637,27 +630,7 @@
     </section>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- SECTION CARTE BLANCHE (IMAGE & TEXTE) -->
-    <!-- SECTION CARTE BLANCHE (IMAGE & TEXTE) -->
-
-
-
     <section class="py-8 md:py-16 bg-[#FEA250]/12">
         <div class="container mx-auto px-4">
             <!-- Changement de flex-row à flex-col sur mobile -->
@@ -1178,8 +1151,8 @@
                 <!-- Colonne de gauche -->
                 <div class="text-center md:text-left">
                     <div class="space-y-3 mb-6">
-                        <a href="/CGV" class="block text-lg hover:text-gray-300 transition">CGV</a>
-                        <a href="/CGU" class="block text-lg hover:text-gray-300 transition">CGU</a>
+                        <a href="{{ route('pages.cgv')}}" class="block text-lg hover:text-gray-300 transition">CGV</a>
+                        <a href="{{ route('pages.cgu')}}" class="block text-lg hover:text-gray-300 transition">CGU</a>
                         <a href="/Remboursement"
                             class="block text-lg hover:text-gray-300 transition">Remboursement</a>
                     </div>
