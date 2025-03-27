@@ -156,7 +156,7 @@
                 <div class="ml-3">
                     <!-- Bouton Burger -->
                     <div x-data="{ open: false }">
-                        <button @click="open = !open" class="text-[36px] focus:outline-none text-white">
+                        <button @click="open = !open" class="text-[24px] sm:text-[28px] md:text-[36px] focus:outline-none text-white">
                             <i class="fas fa-bars"></i>
                         </button>
 
@@ -189,25 +189,19 @@
                 </div>
 
                 <!-- "El" en blanc -->
-                <span class="text-[36px] font-merienda text-white font-bold">
-                    El
-                </span>
-
-                <!-- "Pirata" en rouge -->
-                <span class="text-[36px] font-merienda-black text-[#FF1818] font-bold">
-                    Pirata
-                </span>
+                <span class="text-2xl md:text-[36px] font-merienda text-white font-bold">El</span>
+                <span class="text-2xl md:text-[36px] font-merienda-black text-[#FF1818] font-bold">Pirata</span>
             </div>
 
             <!-- Partie droite : icône utilisateur & drapeau -->
             <div class="flex items-center space-x-6">
                 <!-- Icône utilisateur -->
-                <a href="/login" class="w-5 h-5 flex items-center">
-                    <i class="far fa-user text-white text-lg"></i>
+                <a href="/login" class="w-4 h-4 sm:w-5 sm:h-5 flex items-center">
+                    <i class="far fa-user text-white text-base sm:text-lg"></i>
                 </a>
                 <!-- Drapeau + Texte FR -->
                 <div class="flex items-center space-x-2">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" class="w-5 h-5" alt="FR">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" class="w-4 h-4 sm:w-5 sm:h-5" alt="FR">
                     <span class="text-white font-bold">FR</span>
                 </div>
             </div>
@@ -218,23 +212,23 @@
 
     <!-- CONTENU PRINCIPAL -->
     <div class="page-container bg-[#2b1b17] text-white">
-        <div class="max-w-4xl mx-auto px-4 pt-4">
+        <div class="max-w-4xl mx-auto px-3 sm:px-4 pt-3 sm:pt-4">
             <div class="bg-[#1a1311] rounded-lg shadow-lg overflow-hidden">
                 <!-- En-tête de la page -->
-                <div class="flex justify-between items-center p-5 border-b border-gray-800">
-                    <h1 class="text-4xl header-title font-merienda text-[#FFD700]">{{ $page->title }}</h1>
+                <div class="flex justify-between items-center p-3 sm:p-5 border-b border-gray-800">
+                    <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl header-title font-merienda text-[#FFD700]">{{ $page->title }}</h1>
                 </div>
 
                 <!-- Contenu de la page -->
-                <div class="px-8 pb-8 content-container">
-                   <!-- Dans la section contenu de la page -->
-                    <div class="page-content text-white font-merienda rich-text-content" style="text-align:justify">
+                <div class="px-3 sm:px-4 md:px-6 lg:px-8 pb-4 sm:pb-6 md:pb-8 content-container">
+                    <!-- Dans la section contenu de la page -->
+                    <div class="page-content text-white font-merienda rich-text-content text-xs sm:text-sm md:text-base leading-relaxed sm:leading-loose" style="text-align:justify">
                         {!! $page->content !!}
                     </div>
                 </div>
 
                 <!-- Pied de page avec date de mise à jour -->
-                <div class="p-5 border-t border-gray-800 text-gray-400 flex justify-between items-center font-merienda">
+                <div class="p-3 sm:p-5 border-t border-gray-800 text-gray-400 flex justify-between items-center font-merienda text-xs sm:text-sm">
                     <span>Dernière mise à jour : {{ $page->updated_at->format('d/m/Y') }}</span>
 
                     @if(auth()->check() && auth()->user()->email === 'admin@pirata.fr')
