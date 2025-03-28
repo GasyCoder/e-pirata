@@ -15,10 +15,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- FontAwesome pour les icônes -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merienda&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <style>
             /* Police de base pour le corps */
@@ -222,13 +223,13 @@
                 <!-- Contenu de la page -->
                 <div class="px-3 sm:px-4 md:px-6 lg:px-8 pb-4 sm:pb-6 md:pb-8 content-container">
                     <!-- Dans la section contenu de la page -->
-                    <div class="page-content text-white font-merienda rich-text-content text-xs sm:text-sm md:text-base leading-relaxed sm:leading-loose" style="text-align:justify">
+                    <div class="page-content text-white rich-text-content text-xs sm:text-sm md:text-base leading-relaxed sm:leading-loose" style="text-align:justify;font-family: Marcellus">
                         {!! $page->content !!}
                     </div>
                 </div>
 
                 <!-- Pied de page avec date de mise à jour -->
-                <div class="p-3 sm:p-5 border-t border-gray-800 text-gray-400 flex justify-between items-center font-merienda text-xs sm:text-sm">
+                <div class="p-3 sm:p-5 border-t border-gray-800 text-gray-400 flex justify-between items-center text-xs sm:text-sm" style="text-align:justify;font-family: Marcellus">
                     <span>Dernière mise à jour : {{ $page->updated_at->format('d/m/Y') }}</span>
 
                     @if(auth()->check() && auth()->user()->email === 'admin@pirata.fr')
