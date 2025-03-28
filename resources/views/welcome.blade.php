@@ -144,10 +144,9 @@
                 <div class="ml-3">
                     <!-- Bouton Burger -->
                     <div x-data="{ open: false }">
-                        <button @click="open = !open" class="text-[36px] focus:outline-none text-white">
+                        <button @click="open = !open" class="text-[24px] sm:text-[28px] md:text-[32px] focus:outline-none text-white">
                             <i class="fas fa-bars"></i>
                         </button>
-
                         <!-- Menu Mobile & Desktop -->
                         <div x-show="open" @click.outside="open = false"
                             class="absolute top-16 left-0 w-screen bg-[#1f1512] shadow-lg py-4 px-6
@@ -1147,7 +1146,7 @@
     <footer class="w-full bg-black text-white py-10 ">
         <div class="container mx-auto px-4">
             <!-- Section principale du footer -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 font-merienda">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" style="text-align:justify;font-family: Marcellus">
                 <!-- Colonne de gauche -->
                 <div class="text-center md:text-left">
                     <div class="space-y-3 mb-6">
