@@ -327,7 +327,7 @@
 
 
                 <div class="w-full flex justify-center mt-6">
-                    <div class="bg-no-repeat w-[300px] h-80 sm:w-[500px] sm:h-[500px] md:w-[700px] md:h-[700px] lg:w-[1000px] lg:h-[1000px] xl:w-[1920px] xl:h-[1920px] flex items-center justify-center bg-cover sm:bg-contain" style="background-image: url('http://127.0.0.1:8000/images/chasses/livre.png');background-position: center;padding-left: 20px;">
+                    <div class="bg-no-repeat w-[300px] h-80 sm:w-[500px] sm:h-[500px] md:w-[700px] md:h-[700px] lg:w-[1000px] lg:h-[1000px] xl:w-[1920px] xl:h-[1920px] flex items-center justify-center bg-cover sm:bg-contain" style="background-image: url('{{ asset('images/chasses/livre.png') }}');background-position: center;padding-left: 20px;">
                         <div class="-translate-y-1/2 rotate-[-11deg] pl-0 pr-0 sm:pr-[0px] md:pr-[20px] lg:pr-[10px] xl:pr-[86px]  ml-[15%] sm:ml-[5%] xl:ml-[0%] mt-[90px] sm:mt-[0px] md:mt-[0px] lg:mt-[183px] rounded-md sm:w-[30%] md:w-[30%]">
                             <span class="text-black font-bold block text-[8px] md:text-[10px] lg:text-[20px] xl:text-[36px] sm:text-[8px] font-[Merienda] ml-[0] sm:ml-[3%] pr-[5%] text-left">
                                 L'ÉNIGME DES RUNES CACHÉES
@@ -339,10 +339,11 @@
                         </div>
 
                         <div class="w-[52rem] h-[5rem] sm:w-[150px] sm:h-[250px] md:w-[200px] md:h-[180px] lg:w-[330px] lg:h-[250px] xl:w-[500px] xl:h-[400px] rotate-[-11deg] mr-[50px] -mt-[127px] sm:mt-[-180px] md:mt-[-220px] lg:mt-[-400px] xl:mt-[-800px] flex justify-center pl-0 sm:pl-[35px] md:pl-[0px]">
-                            <img src="http://127.0.0.1:8000/images/chasses/img.jpeg" alt="img" class="w-full h-full object-contain sm:object-contain md:object-contain lg:object-contain xl:object-cover mr-0 sm:mr-0 md:mr-[-40px] lg:mr-[-20px] xl:mr-[-60px]">
+                            <img src="{{ asset('images/chasses/img.jpeg') }}" alt="img" class="w-full h-full object-contain sm:object-contain md:object-contain lg:object-contain xl:object-cover mr-0 sm:mr-0 md:mr-[-40px] lg:mr-[-20px] xl:mr-[-60px]">
                         </div>
                     </div>
                 </div>
+                <!-- {{ asset('images/chasses/img.jpeg') }} -->
 
                 <div class="text-white text-[25px] sm:text-[30pxpx] md:text-[48px] font-bold mt-8 flex justify-center font-[Marcellus]">
                     <span class="w-full sm:w-[80%] md:w-[80%] lg:w-1/2 text-center">Inscrit ta réponse dans le parchemin moussaillon !</span>
@@ -354,7 +355,7 @@
 
                 <div class="w-full flex justify-center mt-6">
                     <div class="relative w-[1017px] h-[300px] md:h-[522px] sm:h-[522px]">
-                        <img src="http://127.0.0.1:8000/images/chasses/fond-response.png" alt="response" class="w-full max-w-full h-full object-contain">
+                        <img src="{{ asset('images/chasses/fond-response.png') }}" alt="response" class="w-full max-w-full h-full object-contain">
 
                         <div class="absolute top-[4rem] sm:top-[9rem] md:top-[7rem] left-12 sm:left-20 md:left-[15rem]">
                             <textarea type="text" class="border-none bg-transparent text-black placeholder-black w-full text-[25px] md:text-[36px] sm:text-[36px] font-[Pirata One]" placeholder="Votre réponse ..." rows="3"></textarea>
