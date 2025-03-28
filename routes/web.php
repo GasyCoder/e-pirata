@@ -33,6 +33,7 @@ Route::get('/enigme', function () { return view('enigme'); });
 Route::get('/inscriptions', function () { return view('inscriptions'); });
 Route::get('/connexion', function () { return view('connexion'); });
 Route::get('/appele', function () { return view('appele'); });
+Route::get('/chasse', function () { return view('chasse'); });
 
 
 // ✅ Routes de vérification d'email (doit être connecté)

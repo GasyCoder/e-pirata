@@ -160,7 +160,7 @@
                             <!-- Liens du menu -->
                             <a href="/" class="block px-4 py-2 hover:bg-[#E3342F] transition">Accueil</a>
                             <a href="#about" class="block px-4 py-2 hover:bg-[#E3342F] transition">Profil</a>
-                            <a href="#services" class="block px-4 py-2 hover:bg-[#E3342F] transition">Les chasses au trésor</a>
+                            <a href="/chasse" class="block px-4 py-2 hover:bg-[#E3342F] transition">Les chasses au trésor</a>
                             <a href="#gallery" class="block px-4 py-2 hover:bg-[#E3342F] transition">Commencer mon aventure</a>
                             <a href="#contact" class="block px-4 py-2 hover:bg-[#E3342F] transition">Avis</a>
                             <a href="{{ route('pages.cgv')}}" class="block px-4 py-2 hover:bg-[#E3342F] transition">CGV</a>
