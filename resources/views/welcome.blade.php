@@ -132,75 +132,129 @@
 
 
 
-    <header class="bg-[#000000] shadow fixed w-full z-50 font-merienda">
-        <!-- px-3 = padding horizontal de 0.75rem -->
-        <div class="container mx-auto px-3 py-4 flex items-center justify-between">
+    <header class="fixed top-0 left-0 w-full z-50 h-20 bg-black">
+        <nav class="relative px-2 py-4">
 
-            <!-- Conteneur flex pour : (1) bouton burger, (2) "El", (3) "Pirata" -->
-            <!-- space-x-3 = espacement de 0.75rem entre les éléments -->
-            <div class="flex items-center space-x-3">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="mt-2">
+                    <a href="/" class="bg-transparent px-5 py-1  text-white hidden md:flex" role="button">
+                        <span class="text-[24px] font-merienda text-white font-[900] mr-3">
+                            El
+                        </span>
 
-                <!-- Conteneur avec ml-3 pour ajouter un espacement supplémentaire avant le bouton burger -->
-                <div class="ml-3">
-                    <!-- Bouton Burger -->
-                    <div x-data="{ open: false }">
-                        <button @click="open = !open" class="text-[24px] sm:text-[28px] md:text-[32px] focus:outline-none text-white">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                        <!-- Menu Mobile & Desktop -->
-                        <div x-show="open" @click.outside="open = false"
-                            class="absolute top-16 left-0 w-screen bg-[#1f1512] shadow-lg py-4 px-6
-                                lg:w-64 lg:left-2 lg:right-2 z-50 transition-all duration-300 ease-in-out"
-                            x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 transform scale-90"
-                            x-transition:enter-end="opacity-100 transform scale-100"
-                            x-transition:leave="transition ease-in duration-200"
-                            x-transition:leave-start="opacity-100 transform scale-100"
-                            x-transition:leave-end="opacity-0 transform scale-90">
-                            <!-- Liens du menu -->
-                            <a href="/" class="block px-4 py-2 hover:bg-[#E3342F] transition">Accueil</a>
-                            <a href="#about" class="block px-4 py-2 hover:bg-[#E3342F] transition">Profil</a>
-                            <a href="/chasse" class="block px-4 py-2 hover:bg-[#E3342F] transition">Les chasses au trésor</a>
-                            <a href="#gallery" class="block px-4 py-2 hover:bg-[#E3342F] transition">Commencer mon aventure</a>
-                            <a href="#contact" class="block px-4 py-2 hover:bg-[#E3342F] transition">Avis</a>
-                            <a href="{{ route('pages.cgv')}}" class="block px-4 py-2 hover:bg-[#E3342F] transition">CGV</a>
-                            <a href="{{ route('pages.cgu')}}" class="block px-4 py-2 hover:bg-[#E3342F] transition">CGU</a>
-                            <a href="/Remboursement" class="block px-4 py-2 hover:bg-[#E3342F] transition">Remboursement</a>
-                            <a href="/regles" class="block px-4 py-2 hover:bg-[#E3342F] transition">Règle du jeu</a>
-                            <a href="/nous" class="block px-4 py-2 hover:bg-[#E3342F] transition">Qui sommes-nous</a>
-                            <a href="/FAQ" class="block px-4 py-2 hover:bg-[#E3342F] transition">FAQ</a>
-                            <a href="/contacte" class="block px-4 py-2 hover:bg-[#E3342F] transition">Contact</a>
-                            <a href="#contact" class="block px-4 py-2 hover:bg-[#E3342F] transition">Se désinscrire</a>
-                        </div>
+                        <span class="text-[24px] font-merienda text-[#FF1818] font-[900]">
+                            Pirata
+                        </span>
+                        <!-- <img src="{{ asset('images/chasses/el-pirata.png') }}" alt="pirate" class="w-[8rem] h-auto object-contain"> -->
+                    </a>
+
+                </div>
+
+                <ul class="hidden md:flex space-x-6">
+                    <li><a href="/" class="hover:text-[#FF1818] font-[Merienda] text-lg">Accueil</a></li>
+                    <li><a href="#" class="hover:text-[#FF1818] font-[Merienda] text-lg">Profil</a></li>
+                    <li class="flex relative group">
+                        <a href="#" class="mr-1 hover:text-[#FF1818] font-[Merienda] text-lg">Chasses au Trésor</a>
+                        <!-- Submenu starts -->
+                        <ul class="absolute bg-black rounded-b-md z-10 p-3 w-60 top-6 transform scale-0 group-hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg">
+                            <li class="hover:bg-slate-100 leading-8 px-2 rounded-sm hover:text-[#FF1818] font-[Merienda] text-lg"><a href="#">Les chasses</a></li>
+                            <li class="hover:bg-slate-100 leading-8 px-2 rounded-sm hover:text-[#FF1818] font-[Merienda] text-lg"><a href="/chasse">Commencer l'aventure</a></li>
+                        </ul>
+                        <!-- Submenu ends -->
+                    </li>
+                    <li class="flex relative group">
+                        <a href="#" class="mr-1 font-[Merienda] text-lg">Légal</a>
+                        <!-- Submenu starts -->
+                        <ul class="absolute bg-black rounded-b-md z-10 p-3 w-52 top-6 transform scale-0 group-hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg">
+                            <li class="hover:bg-slate-100 leading-8 px-2 font-[Merienda] text-lg rounded-sm hover:text-[#FF1818]"><a href="/CGV">CGV</a></li>
+                            <li class="hover:bg-slate-100 leading-8 px-2 font-[Merienda] text-lg rounded-sm hover:text-[#FF1818]"><a href="/CGU">CGU</a></li>
+                            <li class="hover:bg-slate-100 leading-8 px-2 font-[Merienda] text-lg rounded-sm hover:text-[#FF1818]"><a href="/Remboursement">Remboursement</a></li>
+                            <li class="hover:bg-slate-100 leading-8 px-2 font-[Merienda] text-lg rounded-sm hover:text-[#FF1818]"><a href="#">Règles du jeu</a></li>
+                        </ul>
+                        <!-- Submenu ends -->
+                    </li>
+                    <li class="flex relative group">
+                        <a href="#" class="mr-1 hover:text-[#FF1818] font-[Merienda] text-lg">A propos</a>
+                        <!-- Submenu starts -->
+                        <ul class="absolute bg-black rounded-b-md z-10 p-3 w-52 top-6 transform scale-0 group-hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg">
+                            <li class="hover:bg-slate-100 leading-8 font-[Merienda] text-lg px-2 rounded-sm hover:text-[#FF1818]"><a href="#">Qui sommes-nous</a></li>
+                            <li class="hover:bg-slate-100 leading-8 font-[Merienda] text-lg px-2 rounded-sm hover:text-[#FF1818]"><a href="#">FAQ</a></li>
+                            <li class="hover:bg-slate-100 leading-8 font-[Merienda] text-lg px-2 rounded-sm hover:text-[#FF1818]"><a href="#">Contact</a></li>
+                            <li class="hover:bg-slate-100 leading-8 font-[Merienda] text-lg px-2 rounded-sm hover:text-[#FF1818]"><a href="#">Se désinscrire</a></li>
+                        </ul>
+                        <!-- Submenu ends -->
+                    </li>
+                    <!-- <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li> -->
+                </ul>
+                <div class="hidden md:flex gap-3 items-center">
+
+                    <a href="/profile" class="w-[25px] h-[25px] flex items-center">
+                        <img src="{{ asset('images/chasses/user.png') }}" alt="disconnect" class="w-full h-full object-contain">
+                    <!-- <a href="#" class="bg-[#FF1818] px-5 py-1 rounded-3xl hover:bg-red-500 text-white hidden md:flex font-[Merienda] text-lg" role="button">Sign In</a> -->
+                    </a>
+
+                    <a href="/connexion" class="w-[25px] h-[25px] flex items-center">
+                        <img src="{{ asset('images/chasses/sign-out-option.png') }}" alt="disconnect" class="w-full h-full object-contain">
+                    </a>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" class="w-[20px] h-[20px]" alt="FR">
+                        <span class="text-white font-normal text-lg font-[Merienda]">FR</span>
                     </div>
                 </div>
 
-                <!-- "El" en blanc -->
-                <span class="text-[36px] font-merienda text-white font-bold"> <!-- Ajouté font-bold pour correspondre au style -->
-                    El
-                </span>
 
-                <!-- "Pirata" en rouge -->
-                <span class="text-[36px] font-merienda-black text-[#FF1818] font-bold">
-                    Pirata
-                </span>
+                <!-- Mobile menu icon -->
+                <button id="mobile-icon" class="md:hidden">
+                    <i onclick="changeIcon(this)" class="fa-solid fa-bars"></i>
+                </button>
+
             </div>
 
-            <!-- Partie droite : icône utilisateur & drapeau -->
-            <div class="flex items-center space-x-6">
-                <!-- Icône utilisateur -->
-                <a href="/login" class="w-5 h-5 flex items-center">
-                    <i class="far fa-user text-white text-lg"></i>
-                </a>
-                <!-- Drapeau + Texte FR -->
-                <div class="flex items-center space-x-2">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" class="w-5 h-5" alt="FR">
-                    <span class="text-white font-bold">FR</span>
+            <!-- Mobile menu -->
+            <div class="md:hidden flex justify-center mt-3 w-full">
+                <div id="mobile-menu" class="mobile-menu absolute top-23 w-full"> <!-- add hidden here later -->
+                    <ul class="bg-black shadow-lg leading-9 font-bold h-screen">
+
+                        <li><a href="/" class="hover:text-[#FF1818] font-[Merienda] text-lg">Accueil</a></li>
+                        <li><a href="#" class="hover:text-[#FF1818] font-[Merienda] text-lg">Profil</a></li>
+                        <li class="flex relative group">
+                            <a href="#" class="mr-1 hover:text-[#FF1818] font-[Merienda] text-lg">Chasses au Trésor</a>
+                            <!-- Submenu starts -->
+                            <ul class="absolute bg-transparent z-10 p-3 w-60 top-6 transform scale-0 group-hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg">
+                                <li class="hover:bg-slate-100 leading-8 px-2 rounded-sm hover:text-[#FF1818] font-[Merienda] text-lg"><a href="#">Les chasses</a></li>
+                                <li class="hover:bg-slate-100 leading-8 px-2 rounded-sm hover:text-[#FF1818] font-[Merienda] text-lg"><a href="/chasse">Commencer l'aventure</a></li>
+                            </ul>
+                            <!-- Submenu ends -->
+                        </li>
+                        <li class="flex relative group">
+                            <a href="#" class="mr-1 font-[Merienda] text-lg">Légal</a>
+                            <!-- Submenu starts -->
+                            <ul class="absolute bg-transparent z-10 p-3 w-52 top-6 transform scale-0 group-hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg">
+                                <li class="hover:bg-slate-100 leading-8 px-2 font-[Merienda] text-lg rounded-sm hover:text-[#FF1818]"><a href="/CGV">CGV</a></li>
+                                <li class="hover:bg-slate-100 leading-8 px-2 font-[Merienda] text-lg rounded-sm hover:text-[#FF1818]"><a href="/CGU">CGU</a></li>
+                                <li class="hover:bg-slate-100 leading-8 px-2 font-[Merienda] text-lg rounded-sm hover:text-[#FF1818]"><a href="/Remboursement">Remboursement</a></li>
+                                <li class="hover:bg-slate-100 leading-8 px-2 font-[Merienda] text-lg rounded-sm hover:text-[#FF1818]"><a href="#">Règles du jeu</a></li>
+                            </ul>
+                            <!-- Submenu ends -->
+                        </li>
+                        <li class="flex relative group">
+                            <a href="#" class="mr-1 hover:text-[#FF1818] font-[Merienda] text-lg">A propos</a>
+                            <!-- Submenu starts -->
+                            <ul class="absolute bg-transparent z-10 p-3 w-52 top-6 transform scale-0 group-hover:scale-100 transition duration-150 ease-in-out origin-top shadow-lg">
+                                <li class="hover:bg-slate-100 leading-8 font-[Merienda] text-lg px-2 rounded-sm hover:text-[#FF1818]"><a href="#">Qui sommes-nous</a></li>
+                                <li class="hover:bg-slate-100 leading-8 font-[Merienda] text-lg px-2 rounded-sm hover:text-[#FF1818]"><a href="#">FAQ</a></li>
+                                <li class="hover:bg-slate-100 leading-8 font-[Merienda] text-lg px-2 rounded-sm hover:text-[#FF1818]"><a href="#">Contact</a></li>
+                                <li class="hover:bg-slate-100 leading-8 font-[Merienda] text-lg px-2 rounded-sm hover:text-[#FF1818]"><a href="#">Se désinscrire</a></li>
+                            </ul>
+                            <!-- Submenu ends -->
+                        </li>
+                    </ul>
+
                 </div>
             </div>
-        </div>
-        <!-- Ligne fine en bas -->
-        <div class="border-t border-white"></div>
+
+        </nav>
     </header>
 
     <style>
@@ -214,6 +268,23 @@
         header span {
             line-height: 1;
             /* Pour éviter des écarts verticaux inutiles */
+        }
+
+        .mobile-menu {
+            left: -200%;
+            transition: 0.5s;
+        }
+
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-menu ul li ul {
+            display: none;
+        }
+
+        .mobile-menu ul li:hover ul {
+            display: block;
         }
     </style>
 
@@ -711,7 +782,7 @@
 
 
     <section class="py-8 md:py-16 bg-black">
-        <div class="container mx-auto px-4">
+        <div class="lg:container mx-auto px-4">
             <!-- Titres -->
             <div class="text-center mb-8 md:mb-12">
                 <h2 class="text-3xl md:text-4xl lg:text-5xl header-title text-white mb-3 md:mb-4">
@@ -1143,62 +1214,71 @@
     <!-- ============================== -->
     <!-- FOOTER COMPLET -->
 
+
     <footer class="w-full bg-black text-white py-10 ">
-        <div class="container mx-auto px-4">
+        <div class="mx-auto px-4">
             <!-- Section principale du footer -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" style="text-align:justify;font-family: Marcellus">
+            <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-8 font-merienda"> -->
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8 font-merienda">
                 <!-- Colonne de gauche -->
                 <div class="text-center md:text-left">
                     <div class="space-y-3 mb-6">
-                        <a href="{{ route('pages.cgv')}}" class="block text-lg hover:text-gray-300 transition">CGV</a>
-                        <a href="{{ route('pages.cgu')}}" class="block text-lg hover:text-gray-300 transition">CGU</a>
+                        <a href="/CGV" class="block text-[18px] hover:text-gray-300 transition">CGV</a>
+                        <a href="/CGU" class="block text-[18px] hover:text-gray-300 transition">CGU</a>
                         <a href="/Remboursement"
-                            class="block text-lg hover:text-gray-300 transition">Remboursement</a>
+                            class="block text-[18px] hover:text-gray-300 transition">Remboursement</a>
                     </div>
                     <!-- Réseaux sociaux -->
-                    <div class="flex justify-center md:justify-start space-x-6">
-                        <a href="https://web.facebook.com/profile.php?id=100092185284129&_rdc=1&_rdr#"
-                            class="text-2xl hover:text-gray-300 transition">
-                            <i class="fab fa-facebook-square"></i>
-                        </a>
-
-                        <a href="https://www.youtube.com/@Elpirata_officiel"
-                            class="text-2xl hover:text-gray-300 transition">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                        <a href="https://www.snapchat.com/add/elpirata_off?invite_id=ElrPx61w&locale=fr_FR&share_id=CK3Fh2MXQCKcjGRLtXSC0Q&sid=622c513c3cb14e7dbe7dd45dc849cf6e&fbclid=IwAR2YqefBEnW9gDcGqYLd4ybcPGgcuLbTT_fWTA9tiN6jdLYWblX0QpuhUgE"
-                            class="text-2xl hover:text-gray-300 transition">
-                            <i class="fab fa-snapchat"></i>
-                        </a>
-                        <a href="https://www.tiktok.com/@elpirata_officiel?_t=8gyk7xbnf1v&_r=1&fbclid=iwar1hztoduwunlhuuncrgplmretnfh3rdirua1bwofg4w_zqio9zawkyjws4"
-                            class="text-2xl hover:text-gray-300 transition">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
-                        <a href="https://www.instagram.com/elpirata_officiel/?igshid=MzMyNGUyNmU2YQ%3D%3D&utm_source=qr&fbclid=IwAR2nqKxtebhj4L3P93WUhH-EJuUyyuYWzeBTyn9njtOlbQaclx7YsZN0m4M"
-                            class="text-2xl hover:text-gray-300 transition">
-                            <i class="fab fa-instagram"></i>
-                        </a>
+                </div>
+                <div class="hidden md:block"></div>
+                <div class="text-left border-t md:border-t-0 pt-6 md:pt-0">
+                    <div class="space-y-3">
+                        <a href="/regles" class="block text-[18px] hover:text-gray-300 transition">Règles du jeu</a>
+                        <a href="/nous" class="block text-[18px] hover:text-gray-300 transition">Qui
+                            sommes-nous?</a>
+                        <a href="/FAQ" class="block text-[18px] hover:text-gray-300 transition">FAQ</a>
                     </div>
                 </div>
+                <div class="hidden md:block"></div>
 
                 <!-- Colonne du centre -->
-                <div class="text-center border-t md:border-t-0 pt-6 md:pt-0">
-                    <div class="space-y-3">
-                        <a href="/regles" class="block text-lg hover:text-gray-300 transition">Règles du jeu</a>
-                        <a href="/nous" class="block text-lg hover:text-gray-300 transition">Qui
-                            sommes-nous?</a>
-                        <a href="/FAQ" class="block text-lg hover:text-gray-300 transition">FAQ</a>
-                    </div>
-                </div>
 
                 <!-- Colonne de droite -->
-                <div class="text-center md:text-right border-t md:border-t-0 pt-6 md:pt-0">
-                    <div class="space-y-3 mb-6">
-                        <p class="text-lg">Mardi à vendredi 10h / 16h</p>
-                        <p class="text-lg">0678615358</p>
-                    </div>
+                <div class="text-left md:text-right border-t md:border-t-0 pt-6 md:pt-0">
+                    <p class="text-[18px] text-left">Mardi à vendredi 10h / 16h</p>
+                    <p class="text-[18px] text-left mt-3">0678615358</p>
+                </div>
+            </div>
+            <div class="flex justify-between">
+
+                <div class="flex justify-center md:justify-start space-x-6">
+                    <a href="https://web.facebook.com/profile.php?id=100092185284129&_rdc=1&_rdr#"
+                        class="text-2xl hover:text-gray-300 transition">
+                        <i class="fab fa-facebook-square"></i>
+                    </a>
+
+                    <!-- <a href="https://www.youtube.com/@Elpirata_officiel"
+                            class="text-2xl hover:text-gray-300 transition">
+                            <i class="fab fa-youtube"></i>
+                        </a> -->
+                    <a href="https://www.snapchat.com/add/elpirata_off?invite_id=ElrPx61w&locale=fr_FR&share_id=CK3Fh2MXQCKcjGRLtXSC0Q&sid=622c513c3cb14e7dbe7dd45dc849cf6e&fbclid=IwAR2YqefBEnW9gDcGqYLd4ybcPGgcuLbTT_fWTA9tiN6jdLYWblX0QpuhUgE"
+                        class="text-2xl hover:text-gray-300 transition">
+                        <i class="fab fa-snapchat"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@elpirata_officiel?_t=8gyk7xbnf1v&_r=1&fbclid=iwar1hztoduwunlhuuncrgplmretnfh3rdirua1bwofg4w_zqio9zawkyjws4"
+                        class="text-2xl hover:text-gray-300 transition">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="https://www.instagram.com/elpirata_officiel/?igshid=MzMyNGUyNmU2YQ%3D%3D&utm_source=qr&fbclid=IwAR2nqKxtebhj4L3P93WUhH-EJuUyyuYWzeBTyn9njtOlbQaclx7YsZN0m4M"
+                        class="text-2xl hover:text-gray-300 transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+                <div>
+
                     <a href="/contacte"
-                        class="inline-block bg-white text-black font-semibold py-2 px-6 rounded hover:bg-gray-200 transition duration-200">
+                        class="inline-block bg-white text-black font-semibold py-2 px-6 rounded-lg hover:bg-gray-200 transition duration-200">
                         Contact
                     </a>
                 </div>
@@ -1206,12 +1286,13 @@
 
             <!-- Séparation et copyright -->
             <div class="mt-8 pt-6 border-t border-white/20">
-                <p class="text-sm text-center">
+                <p class="text-[18px] text-center">
                     Copyright © 2025 alpirata Tous droits réservés
                 </p>
             </div>
         </div>
     </footer>
+
 
 
 
