@@ -18,6 +18,7 @@
     "dependencies": {
         "@tailwindcss/forms": "^0.5.10",
         "alpinejs": "^3.14.8",
-        "howler": "^2.2.4"
+        "howler": "^2.2.4",
+        "pinia": "^3.0.1"
     }
 }

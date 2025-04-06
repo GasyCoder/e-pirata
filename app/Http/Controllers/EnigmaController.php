@@ -51,7 +51,7 @@ class EnigmaController extends Controller
 
         // Récupérer les chapitres pour le filtre
         $chapters = Chapter::orderBy('order')->get();
-
+        dd($enigmas);
         return view('enigmas.index', compact('enigmas', 'chapters'));
     }
 

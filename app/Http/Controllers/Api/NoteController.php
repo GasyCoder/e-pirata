@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApiResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class NoteController extends Controller
@@ -267,6 +268,109 @@ class NoteController extends Controller
                 ['exception' => $e->getMessage()],
                 500
             );
+        }
+    }
+
+    /**
+     * Créer ou mettre à jour plusieurs notes en une seule requête
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeOrUpdateBatch(Request $request)
+    {
+        try {
+            $request->validate([
+                'notes' => 'required|array',
+                'notes.*.enigma_id' => 'required|integer|exists:enigmas,id',
+                'notes.*.content' => 'nullable|string',
+            ]);
+
+            $user = Auth::user() ?? $request->user();
+            $results = [];
+            $count = 0;
+
+            DB::beginTransaction();
+
+            foreach ($request->notes as $noteData) {
+                $note = Note::updateOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'enigma_id' => $noteData['enigma_id']
+                    ],
+                    [
+                        'content' => $noteData['content'] ?? null
+                    ]
+                );
+
+                $results[] = [
+                    'enigma_id' => $note->enigma_id,
+                    'content' => $note->content,
+                    'status' => $note->wasRecentlyCreated ? 'created' : 'updated'
+                ];
+
+                $count++;
+            }
+
+            DB::commit();
+
+            Log::info('Notes sauvegardées en batch', [
+                'user_id' => $user->id,
+                'count' => $count
+            ]);
+
+            return ApiResource::success([
+                'results' => $results,
+                'count' => $count
+            ], "$count notes sauvegardées avec succès");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Erreur lors de la sauvegarde batch des notes', [
+                'user_id' => Auth::id(),
+                'exception' => $e->getMessage()
+            ]);
+
+            return ApiResource::error(
+                'Une erreur est survenue lors de la sauvegarde des notes',
+                ['exception' => $e->getMessage()],
+                500
+            );
+        }
+    }
+
+    public function getAllNotesForUser(Request $request)
+    {
+        try {
+            $user = Auth::user() ?? $request->user();
+
+            // Récupérer toutes les notes avec les titres des énigmes
+            $notes = Note::where('user_id', $user->id)
+                ->with('enigma:id,title')
+                ->get()
+                ->map(function ($note) {
+                    return [
+                        'id' => $note->id,
+                        'enigma_id' => $note->enigma_id,
+                        'enigma_title' => $note->enigma->title ?? 'Énigme inconnue',
+                        'content' => $note->content,
+                        'updated_at' => $note->updated_at,
+                    ];
+                });
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Notes récupérées avec succès',
+                'data' => $notes,
+                'count' => $notes->count()
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Erreur récupération notes utilisateur : ' . $e->getMessage());
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Erreur lors de la récupération des notes',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }

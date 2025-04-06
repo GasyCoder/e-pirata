@@ -7,7 +7,12 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\EnigmaApiController;
 use App\Http\Controllers\Api\TreasureApiController;
+use App\Http\Controllers\EnigmaController;
 
+
+Route::get('/test', function () {
+    return response()->json(['message' => 'API fonctionne bien 🎉']);
+});
 // Ces routes sont pour mon test personnel via thunder client pour avoir tokende l'utilisateur
 Route::post('/login', function (Request $request) {
     $credentials = $request->only('email', 'password');
@@ -30,7 +35,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Routes protégées par authentification
 Route::middleware('auth:sanctum')->group(function () {
-    // Routes énigmes
+
+    Route::get('/enigmas', [EnigmaApiController::class, 'index'])->name('enigmas.index');
     Route::post('/enigmas/{enigmaId}/validate', [EnigmaApiController::class, 'validateAnswer']);
     Route::get('/enigmas/{enigmaId}/hint/{hintNumber}', [EnigmaApiController::class, 'getHint']);
     Route::post('/fragments/generate', [EnigmaApiController::class, 'generateUniqueFragment']);
@@ -54,14 +60,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/completed-all', [EnigmaApiController::class, 'hasCompletedAllEnigmas']);
 
     // Routes pour les notes - noter l'ordre des routes
-    Route::post('/notes/clear-all', [NoteController::class, 'clearAll'])->middleware('admin');
-    Route::delete('/notes/{enigma_id}', [NoteController::class, 'destroy'])->middleware('admin');
-    Route::get('/notes/{enigma_id}', [NoteController::class, 'show'])
-        ->where('enigma_id', '[0-9]+');
-    Route::post('/notes/{enigma_id}', [NoteController::class, 'storeOrUpdate'])
-        ->where('enigma_id', '[0-9]+');
-    Route::get('/notes', [NoteController::class, 'getUserNotes']);
+        Route::post('/notes/clear-all', [NoteController::class, 'clearAll'])->middleware('admin');
+        Route::delete('/notes/{enigma_id}', [NoteController::class, 'destroy'])->middleware('admin');
+        Route::get('/notes/{enigma_id}', [NoteController::class, 'show'])
+            ->where('enigma_id', '[0-9]+');
+            Route::post('/notes/{enigma_id}', [NoteController::class, 'storeOrUpdate'])
+                ->where('enigma_id', '[0-9]+');
+        Route::get('/notes', [NoteController::class, 'getUserNotes']);
 
+        Route::post('/notes/batch', [NoteController::class, 'storeOrUpdateBatch']);
+        Route::get('/user/notes', [NoteController::class, 'getAllNotesForUser']);
     // Route accéder aux pages (CGU, CGV)
     Route::get('/pages/{slug}', [PageController::class, 'show']);
 

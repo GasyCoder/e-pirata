@@ -11,9 +11,55 @@ use App\Http\Resources\ApiResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\FragmentResource;
+use App\Models\Chapter;
 
 class EnigmaApiController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $query = Enigma::query();
+
+        // Filtrage
+        if ($request->filter === 'non-resolues') {
+            $query->whereDoesntHave('userProgress', function ($q) {
+                $q->where('user_id', Auth::id())
+                    ->where('completed', true);
+            });
+        } elseif ($request->filter === 'completees') {
+            $query->whereHas('userProgress', function ($q) {
+                $q->where('user_id', Auth::id())
+                    ->where('completed', true);
+            });
+        }
+
+        // Filtrage par chapitre
+        if ($request->chapter) {
+            $query->where('chapter_id', $request->chapter);
+        }
+
+        // Recherche
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%')
+                    ->orWhere('description', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Pagination avec conservation des paramètres de requête
+        $enigmas = $query->orderBy('chapter_id')->orderBy('order')->paginate(6);
+        $enigmas->appends($request->all());
+
+        // Récupérer les chapitres pour le filtre
+        $chapters = Chapter::orderBy('order')->get();
+
+        // Retourner la réponse JSON avec les énigmes et les chapitres
+        return response()->json([
+            'enigmas' => $enigmas,
+            'chapters' => $chapters
+        ]);
+    }
+
     /**
      * Valider la réponse à une énigme
      */
@@ -62,8 +108,8 @@ class EnigmaApiController extends Controller
             $user->save();
 
             $message = "Félicitations ! Vous avez résolu l'énigme" .
-                      ($userProgress->attempts == 1 ? " du premier coup !" : " en {$userProgress->attempts} tentatives !") .
-                      "\nVous avez obtenu le fragment : {$fragment}";
+                ($userProgress->attempts == 1 ? " du premier coup !" : " en {$userProgress->attempts} tentatives !") .
+                "\nVous avez obtenu le fragment : {$fragment}";
         } else {
             $message = "Ce n'est pas la bonne réponse. Essayez encore !";
         }
@@ -232,7 +278,7 @@ class EnigmaApiController extends Controller
         $percentage = $totalEnigmas > 0 ? round(($completedCount / $totalEnigmas) * 100) : 0;
 
         // Ajouter le statut complété à chaque énigme
-        $enigmasWithStatus = $allEnigmas->map(function($enigma) use ($completedEnigmas) {
+        $enigmasWithStatus = $allEnigmas->map(function ($enigma) use ($completedEnigmas) {
             $completed = $completedEnigmas->contains('enigma_id', $enigma->id);
             return [
                 'id' => $enigma->id,
